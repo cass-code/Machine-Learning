@@ -1,0 +1,332 @@
+---
+# IMPORTANT: Change settings here, but DO NOT change the spacing.
+# Remove comments and add values where applicable.
+# The descriptions below should be self-explanatory
+
+title: "The Relationship between Health and Employment in South Africa"
+#subtitle: "An empirical study"
+
+documentclass: "elsarticle"
+
+Thesis_FP: FALSE
+
+# --------- Front Page
+# Comment: ----- Follow this pattern for up to 5 authors
+AddTitle: TRUE # Use FALSE when submitting to peer reviewed platform. This will remove author names.
+Author1: "Cassandra Pengelly"
+Ref1: "Stellenbosch University"
+Email1: "20346212\\@sun.ac.za"
+
+keywords: "Health \\sep Unemployment \\sep South Africa" # Use \\sep to separate
+JELCodes: I1-I10
+
+
+# ----- Manage headers and footers:
+#BottomLFooter: $Title$
+#BottomCFooter:
+#TopLHeader: \leftmark # Adds section name at topleft. Remove comment to add it.
+#BottomRFooter: "\\footnotesize Page \\thepage" # Add a '#' before this line to remove footer.
+addtoprule: TRUE
+#addfootrule: TRUE               # Use if footers added. Add '#' to remove line.
+
+# --------- page margins:
+margin: 2.3 # Sides
+bottom: 2 # bottom
+top: 2.5 # Top
+HardSet_layout: TRUE # Hard-set the spacing of words in your document. This will stop LaTeX squashing text to fit on pages, e.g.
+
+# ---------- General:
+RemovePreprintSubmittedTo: TRUE  # Removes the 'preprint submitted to...' at bottom of titlepage
+#Journal: "Journal of Finance"   # Journal that the paper will be submitting to, if RemovePreprintSubmittedTo is set to TRUE.
+toc: FALSE                       # Add a table of contents
+numbersections: TRUE             # Should sections (and thus figures and tables) be numbered?
+fontsize: 12pt                  # Set fontsize
+linestretch: 1.2                # Set distance between lines.
+#link-citations: TRUE            # This creates dynamic links to the papers in reference list.
+
+### Adding additional latex packages:
+# header-includes:
+#    - \usepackage{colortbl} # Add additional packages here.
+
+output:
+  pdf_document:
+    keep_tex: TRUE
+    template: Tex/TexDefault.txt
+    fig_width: 3.5 # Adjust default figure sizes. This can also be done in the chunks of the text.
+    fig_height: 3.5
+
+abstract: "Employment and health are interrelated: unemployment has an adverse effect on people’s health, and people that have problems with their health have a higher probability of losing their jobs and tend to remain unemployed for longer. This essay investigates the relationship between health and employment in South Africa, where NIDS data is used to construct an empirical model. Probit regression analysis shows that there is a significant and negative coefficient for health, which suggests that those with poor health are less likely to be employed, ceteris paribus."
+---
+
+<!-- First: Set your default preferences for chunk options: -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 6, fig.height = 5, fig.pos="H", fig.pos = 'H')
+```
+<!-- ############################## -->
+<!-- # Start Writing here: -->
+<!-- ############################## -->
+
+\newpage
+# Introduction \label{Introduction}
+
+Employment gives people access to economic and social resources and thus plays a key role in the social equality of a society. Research suggests that an important dimension of employment and inequality is health, and how it affects people’s inclusion in the labour force (Stauder, 2018:59). Empirical evidence shows that there is a significant relationship between health and employment status; however, the relationship is bidirectional (van Rijn, Robroek, Brouwer, & Burdorf, 2014). 
+
+On the one hand, the causation thesis proposes that unemployment has an adverse effect on people’s health, which is evidenced by a higher prevalence of morbidity and mortality among the unemployed (Schuring, Burdorf, Kunst & Mackenbach, 2006:597). On the other hand, according to the selection hypothesis, people that have problems with their mental or physical health have a higher probability of losing their jobs and tend to remain unemployed for longer periods (Schuring et al. 2006:597).  There may also be factors that have a causal link to both health and employment status, for example, people who are less educated have a higher risk of falling sick and are more likely to be unemployed.
+
+The South African economy is characterised by widespread unemployment, high levels of inequality and stagnating growth. Using the narrow definition of unemployment, Statistics South Africa (2019, 2020) reported an unemployment rate of 29.1% at the end of 2019 and 32,5% at the end of 2020. Unemployment is not a new challenge for South Africa, but it has to be addressed to improve economic growth (Du Toit, De Witte, Rothmann & Van den Broeck 2018:1). Before we can address unemployment in South Africa, we have to break down and understand the components that impact a person’s employment status. There are many factors that can affect whether someone is employed or not, including age, education level and health. This essay is concerned with the role that health plays in the story of South Africa’s unemployment.
+
+The aim of this paper is to examine the relationship between health and employment in South Africa. An empirical approach is taken, where data from the National Income Dynamics Study is used to run regression analysis. Section 2 briefly reviews the literature on the effect of health on employment and contextualises the South African labour market. Section 3 outlines the methodology and data used in the study. Section 4 presents the empirical model, and section 5 provides a discussion of the results. The final section concludes.
+
+\newpage
+# Health, Employment and the South African Labour Market
+
+## Health and Employment
+As Pelkowski and Berger (2004) show, health problems affect labour market outcomes, including a person’s employment status, annual hours worked and hourly wages. The social mechanisms through which health and employment are related can be broadly classified into four categories: the causation thesis, reverse causation, indirect causation, and re-employment selection (Stauder, 2019:60-61). 
+
+Schuring et al. (2006:597) describe the causation mechanism as where unemployment may cause poor mental and physical health outcomes. Unemployment leads to a reduction in people’s income, which in turn forces people to adjust their living standards. The unemployed are forced to spend their savings, which can cause financial stress and reduce people’s ability to cover medical expenses and ability to plan for the future. In addition, unemployment may affect people’s self-esteem and social identity as well as cause people to lose a source of social support (their work contacts) (Stauder, 2019:60-61). Schuring et al. (2006:597) present an example of the causation effect. They show that when unemployment increased amongst British households, there was an increase in the incidence of illness. And conversely, when employment increased, there was an upswing in the recovery from these illnesses.
+
+McDonougha and Amick (2001:135) describe the selection hypothesis as the case where workers with poor health have a high probability of selecting into unemployment. Mental or physical health problems may negatively impact on an individual’s performance at work or lead to more days of absence, both of which increase the risk of job loss (Vancea & Utzet, 2017). Additionally, poor health could lead to an increase in other forms of non-employment, early retirement for example. 
+
+Schuring et al. (2006:597-598) present evidence that supports the selection hypothesis. In a Norwegian labour market study, long-term unemployed individuals with mental morbidities were less likely to find a paid job. In another European study, British people with minor psychiatric morbidities had a lower probability of gaining employment than their healthier counterparts. And in a study involving Finnish men, it was found that poor health (self-assessed) could be used to accurately predict whether individuals would retire early (in cases not related to illness) and to predict disability.
+
+A third way that health and employment are linked is through indirect causation. This describes the case where there is a confounding variable that is correlated with both having poor health and being unemployed. For example, if a person is neurotic, then he/she may face a higher risk of both falling ill and becoming unemployed. Lastly, health affects employment through the reverse causation mechanism. That is, once a person with poor health is unemployed, he/she has a lower chance of being re-employed (Stauder, 2019:61)
+
+## The South African Labour Market
+
+The South African economy is known for its high levels of inequality, a remnant from the legacy of apartheid (Burger & Jafta, 2006:1). Despite the ending of legislated labour market discrimination, following the 1994 elections, the South African labour market reflects a dichotomous experience between skilled and unskilled labourers, where skilled and unskilled labour still has strong racial lines.
+
+According to Statistics South Africa, in 2018, the employed accounted for the largest share among the white population group, who held a share of the working age who were employed of 62,7%, in contrast to 40,3% amongst black Africans. Education also plays a significant role in South African labour market trends, and the level of unemployment is significantly higher amongst people whose highest level of education is below matric. In 2018, the employed accounted for 76% amongst those who held a tertiary qualification. The following section looks the data and methodology used.
+
+\newpage
+# Data and Methodology \label{Data}
+
+## Data
+
+This paper uses data from Wave 5 of the National Income Dynamics Survey (NIDS) (SALDRU, 2018). The NIDS is a nationally representative household panel study, which started in 2008 with a sample of over 28,000 individuals belonging to 7,300 households. The NIDS is conducted every two years with the same households. The most recent wave, Wave 5, was conducted in 2017. In total 39,434 individuals were surveyed for Wave 5, where 20,113 were part of the original Wave 1 study and 2,016 were from a new top-up sample. The survey is funded by the Department of Planning, Monitoring and Evaluation; the Southern Africa Labour and Development Research Unit (SALDRU) at the University of Cape Town is tasked with implementing the survey. The NIDS data is a comprehensive set that covers topics relating to household composition, poverty, health, mortality, consumption, income and employment (SALDRU, 2018).
+
+## Methodology
+
+To investigate the relationship between health and employment, a probit model is used, where the dependent variable is employment. Here, employment is a binary variable, which takes on a value of 1 if a person is employed and 0 otherwise. In this case, a person is defined as employed if he/she was being paid a wage or salary to work on a regular basis (full time or part time) for an employer or for himself/herself at the time of the survey. Students and stay-at-home carers have been excluded from the sample, and thus do not form a part of those not employed.
+
+The variable ‘employed’ is regressed on several explanatory variables, including education, age, race, gender, marital status and health status. These variables are summarised in table 3.1. Education is accounted for in terms of a person’s highest qualification and is presented as a categorical variable in the regression.  The variable ‘matric’ takes on a value of 1 if a person’s highest qualification is a matric certificate, and 0 otherwise. The variable ‘tertiary’ takes on a value of 1 if a person’s highest level of education is a tertiary qualification, and 0 otherwise. The base category is where a person’s highest qualification is lower than a matric certificate.
+
+The NIDS questionnaire asks for a person’s date of birth, which is used to calculate the variable ‘age’ by subtracting a person’s year of birth from 2021.  Only people whose ages lie between 15 and 64 years are included in the sample since this is the working age range in South Africa, as defined by Statistics South Africa (2018). The variable ‘age_squared’ is computed by squaring the ‘age’ variable. ‘age_squared’ is included in the model to account for a nonlinear relationship between age and employment, which research suggests is likely. 
+
+‘race’ is the third independent variable accounted for in the regression. ‘race’ is a categorical variable with 4 groups: African, Coloured, Asian/Indian and White; the base group is African. The fourth explanatory variable included in the model is gender. Here the variable is labelled ‘male’ and is a dummy variable that takes on the value 1 if the person is male and 0 if the person is female. The variable ‘married’ is also a dummy variable, which is set to 1 if the person is married and 0 otherwise. 
+
+Finally, a person’s health status is accounted for by two different variables: ‘poorhealth’ and ’shorthealth’. ‘poorhealth’ represents longer term illnesses or more serious health conditions. These include if the person has cancer, heart problems, high blood pressure, diabetes, tuberculosis, or still experiences the effects of a stroke. If a person answered yes to having any of the aforementioned conditions, ‘poorhealth’ takes on a value of 1, and is 0 otherwise. ’shorthealth’ accounts for health in the short term (past 30 days) including if a person experienced a fever, a persistent cough, a cough with blood, chest pain, body ache, headache, back ache, joint pain, diarrhoea, painful urination swelling ankles or severe weight loss. If a person experienced any of these ailments in the past month, then ‘shorthealth’ takes on a value of 1 and 0 otherwise.
+
+
+```{r ShortTable, results = 'asis'}
+
+library(xtable)
+pacman::p_load(tibble) 
+data1 <- array(c("employment", "age", "age_squared", "matric", "tertiary", "raceColoured", "raceAsian/Indian", "raceWhite", "male", "married" , "poorhealth", "shorthealth", "Has a value of 1 if individual is employed, 0 otherwise", "Age of individual", "Squared age of individual", "Has a value of 1 if highest qualification is matric, 0 otherwise", "Has a value of 1 if highest education level is tertiary, 0 otherwise", "Has a value of 1 if individual is Coloured, 0 otherwise", "Has a value of 1 if individual is Asian/Indian, 0 otherwise", "Has a value of 1 if individual is White, 0 otherwise", "Has a value of 1 if individual is male, 0 if female", "Has a value of 1 if individual is married, 0 otherwise", "Has a value of 1 if individual has a serious health issue, 0 otherwise", "Has a value of 1 if individual has a shortterm health issue, 0 otherwise"), dim = c(12, 2))
+colnames(data1) <- c("variable", "value")
+
+vartable <- data1 %>% tibble::as_tibble()
+table <- xtable(vartable, caption = "Variable List \\label{tab1}")
+print.xtable(table,
+             # tabular.environment = "longtable",
+             floating = TRUE,
+             table.placement = 'H',
+             # scalebox = 0.3,
+             comment = FALSE,
+             caption.placement = 'top'
+             )
+
+```
+<!--#\hfill-->
+
+\newpage
+# Empirical Model \label{Model}
+
+The general population model of the Probit regression is:
+\begin{align}
+Y = \beta_{0} + \beta_{1} X_{1} + \beta_{2} X_{2} + ... + \beta_{k} X_{k} + \mu   \label{eq1}
+\end{align} Where 
+\begin{align}
+P(Y = 1 \mid X_{1}, X_{2}, ..., X_{k}) = \Phi(\beta_{0} + \beta_{1} X_{1} + \beta_{2} X_{2} + ... + \beta_{k} X_{k})\notag
+\end{align}
+
+$Y$ is a dichotomous variable that takes on a value of $1$ or $0$,  $X_{1}, X_{2}, ..., X_{k}$ are regressors, $\Phi(\cdotp)$ is the cumulative standard normal distribution function, and $\mu$ is the error term (Hanck, Arnold, Gerber & Schmelzer, 2020:317).
+
+It is assumed that:
+\begin{align}
+E(Y \mid X) = P(Y = 1 \mid X) = \Phi(\beta_{0} + \beta_{1}) \notag \\
+\Phi(z) = P(Z \le z), Z \sim \sf norm(0, 1) \notag
+\end{align}
+
+The base model (regression 1) for this paper looks at the probability that a person is employed ($P(Y = 1)$), given his/her highest level of education, age, race, gender and marital status (these factors are the regressors in \ref{eq1}).
+
+The second regression builds on this first model by adding a variable for health status (poorhealth). The final regression extends the second regression by accounting for short term health issues with the variable shorthealth.
+
+The final model is given by the equation:
+\begin{align}
+P(employment) = & \beta_{0} + \beta_{1} matric + \beta_{2} tertiary + \beta_{3} age  + \notag \\ & \beta_{4}  agesquared  + \beta_{5} raceColoured + \beta_{6} raceAsian/Indian  + \notag \\ & \beta_{7} raceWhite +  \beta_{8} male + \beta_{9} married + \beta_{10} poorhealth  +  \notag \\ & \beta_{11} shorthealth + \mu   \notag
+\end{align}
+Table 4.1. summarises the regression results. 
+
+
+```{r, results = 'asis'}
+library(haven)
+adult<- read_dta("~/2021 Academics/Development/Essay 2/adult_w5_anon_v1.0.0-stata11.dta")
+
+library(tidyverse)
+library(dplyr)
+adultf <- adult %>% 
+  filter(w5_a_em1 == 1 | w5_a_em1 == 2)
+adultf <- as_tibble(adultf)
+
+adult_se <- adultf %>%
+  mutate(w5_a_em1 = replace(w5_a_em1, w5_a_ems == 1 & w5_a_em1 == 2, 1))
+
+adultem <- adultf %>%
+    dplyr::mutate( w5_a_noemex = replace_na(w5_a_noemex, 0)) %>% 
+    filter(w5_a_noemex !=2 & w5_a_noemex !=6 & w5_a_noemex !=7 & w5_a_noemex !=10) %>%
+    mutate(w5_a_em1 = replace(w5_a_em1, w5_a_em1 == 2, 0))
+
+adultempl <- adultem %>% 
+  rename(employed = w5_a_em1,
+         race = w5_a_popgrp,
+         male = w5_a_gen,
+         tertiary = w5_a_edter,
+         matric = w5_a_edschgrd,
+         married = w5_a_curmarst)
+
+adult1 <- adultempl %>% 
+            mutate(age = 2021 - w5_a_dob_y) %>%
+            filter(age>=15 & age<=64) %>% 
+            filter(race>=1 & race<= 4) %>%
+           # mutate(race = replace(race, race == 4, 0)) %>% 
+            mutate(male = replace(male, male == 2, 0)) %>%
+            mutate(married = replace(married, married !=1, 0)) %>% 
+            dplyr::mutate(married = replace_na(married, 0)) 
+            
+adult1$race = factor(adult1$race, labels=c("African", "Coloured", "Asian/Indian", "White"))
+#contr.treatment(4)
+#ls(adult1)
+adult2 <- adult1 %>% mutate(age_squared = age*age)
+                  
+adult3 <- adult2 %>% 
+            mutate(matric = replace(matric, matric != 12, 0)) %>% 
+            mutate(matric = replace(matric, matric == 12, 1)) %>% 
+            mutate(tertiary = replace(tertiary, tertiary !=1, 0))
+
+adult4 <- adult3 %>% mutate(poorhealth = 0) %>% 
+    mutate(poorhealth = replace(poorhealth, w5_a_hltb_stl==1 | w5_a_hlbp_stl ==1 |      w5_a_hldia_stl ==1| w5_a_hlstrk_stl ==1 | w5_a_hlast_stl ==1 | w5_a_hlhrt ==1 |     w5_a_hlcan==1, 1)) %>% 
+    mutate(shorthealth = 0) %>% 
+    mutate(shorthealth = replace(shorthealth, w5_a_hl30fev ==1 |w5_a_hl30pc ==1     |w5_a_hl30cb ==1 | w5_a_hl30cp ==1 | w5_a_hl30b ==1 | w5_a_hl30h ==1 | w5_a_hl30ba ==1 | w5_a_hl30jp ==1 | w5_a_hl30d ==1 | w5_a_hl30pu ==1 | w5_a_hl30sa ==1 | w5_a_hl30wl ==1, 1))
+
+if(!require(huxtable)) install.packages(huxtable)
+library(huxtable)
+
+# data(adult4, package = 'ggplot2')
+# Title <- "Regression Output"
+# Label <- "Probit regression with employment as the dependent variable"
+# lm1 <- glm(employed ~ matric + tertiary + age + age_squared + race + male + married, family = binomial(link = "probit"), data = adult4)
+# lm2 <- glm(employed ~ poorhealth + matric + tertiary + age + age_squared + race + male + married, family = binomial(link = "probit"), data = adult4)
+# lm3 <- glm(employed ~ poorhealth + shorthealth + matric + tertiary + age + age_squared + race + male + married, family = binomial(link = "probit"), data = adult4)
+# htab <-
+# huxreg(lm1, lm2, lm3,
+#             statistics = c(N = "nobs", R2 = "r.squared"),
+#             note = "%stars%.") %>%
+#   set_caption(Title) %>%
+#   set_label(Label)
+# 
+# # More settings:
+# font_size(htab) <- 11
+# # Let's change regression names: this is slightly hacky, but works. Comment out this section to see what the default looks like:
+#   #Names <- c( "Reg1", "Reg2", "Reg3")
+#   #for(i in 1:length(Names)) {
+#     #htab[1,][[1+i]] <- Names[i]
+#  # }
+# # Now simply call the table:
+# #split_down(htab, after = 5, headers = TRUE)
+# htab
+
+# library(stargazer)
+library(lmtest)
+library(sandwich)
+
+#
+# if(!require("lmtest")) install.packages("lmtest")
+# if(!require("sandwich")) install.packages("sandwich")
+# library(lmtest)
+# library(sandwich)
+# cf1 <- coeftest(lm1, vcov. = vcovHC, type = "HC1")
+# cf2 <- coeftest(lm2, vcov. = vcovHC, type = "HC1")
+# cf3 <- coeftest(lm3, vcov. = vcovHC, type = "HC1")
+# cf1
+# cf2
+# cf3
+
+data(adult4, package = 'ggplot2')
+Title <- "Regression Output with Employment as the dependent variable"
+Label <- "Table 3.1"
+lm1 <- glm(employed ~ matric + tertiary + age + age_squared + race + male + married, family = binomial(link = "probit"), data = adult4)
+lm2 <- glm(employed ~ poorhealth + matric + tertiary + age + age_squared + race + male + married, family = binomial(link = "probit"), data = adult4)
+lm3 <- glm(employed ~ poorhealth + shorthealth + matric + tertiary + age + age_squared + race + male + married, family = binomial(link = "probit"), data = adult4)
+htab1 <-
+huxreg(coeftest(lm1, vcov. = vcovHC, type = "HC1"), coeftest(lm2, vcov. = vcovHC, type = "HC1"), coeftest(lm3, vcov. = vcovHC, type = "HC1"),
+            statistics = c(N = "nobs", R2 = "r.squared"),
+            note = "%stars%.") %>%
+  set_caption(Title) %>%
+  set_label(Label)
+font_size(htab1) <- 11
+htab1
+```
+\newpage
+# Results and Discussion \label{Discussion}
+
+The base model shows that education, age, race (with the exception of the Asian/Indian group), gender and marital status are all statistically significant at 1%. The Probit regression coefficients give the change in the z-score for a one unit change in the independent variable. The signs of the coefficients indicate whether the presence of/an increase in the independent variable is associated with an increase or decrease in the probability of a person being employed. The variables ‘matric’, and ‘tertiary’ both have positive coefficients in the three regressions. This suggests a person is more likely to be employed if he/she has a matric or a tertiary qualification, compared to someone who has neither qualification, ceteris paribus.
+
+The probability of being employed increases with age, up until some turning point, after which the probability decreases as age increases – all else being equal. This is shown by ‘age’ having a positive coefficient and ‘age_squared’ having a negative coefficient. The positive coefficients on the race categorical variables shows that being Coloured, Asian/Indian or White is associated with a higher probability of being employed, compared to a person who is African (the base group), ceteris paribus. The variable ‘male’ has a positive coefficient in all three regressions, which suggests that men are more likely to be employed than women, holding all else constant. The likelihood of being employed is positively associated with being married, ceteris paribus.
+
+The second regression introduces the variable “poorhealth”, which is statistically significant at 5%. The negative coefficient shows that poor health is associated with a lower probability of being employed, when controlling for education, age, race, gender and marital status. This is consistent with the literature and other empirical studies (see Pelkowski & Berger, 2004; and Schuring et al. 2007). The third regression incorporates short-term health issues, ‘shorthealth’, which also has a negative coefficient. However, it is not statistically significant, which suggests that short term health problems do not substantially affect the probability of being employed.
+
+The regression results show that education increases the Z score the most, which implies it is associated with a higher probability of employment than the other explanatory variables. Given South Africa’s history of a dichotomous labour force, an argument could be made that those who have less access to quality healthcare, likely don’t have access to quality education either and thus have a lower probability of being employed. This would be a case of the indirect causation mechanism, where the confounding variable is access to quality social services. Theoretically to account for this in a regression, a variable for ‘access to quality social services’ should be included in the model. Unfortunately, accurately quantifying such a variable is practically challenging. 
+
+It could also be that for those who are less educated, having poor health could have a larger negative effect on the probability of being employed than those who have higher levels of education. This is because the type of work that employs more educated people, can be more flexible and accommodating of the health conditions of its workers. For example, a software engineer could work remotely from home, whereas a labourer would have to be physically present as his/her workplace. If these two employees both had poor health or lived with a chronic illness, the software engineer is more likely to remain employed due to the nature of his/her work. This could be captured in the regression with an interaction effect by including a term for the product of ‘poorhealth’ and the education variables.
+
+
+<!-- hfill can be used to create a space, like here between text and table. -->
+
+# Conclusion
+
+Using NIDS data, this essay presented empirical evidence of the relationship between poor health and employment in South Africa. The Probit regression indicates that poor health plays a small but significant role in explaining the probability that an individual is employed. The model results show that poor health is negatively associated with the probability of being employed. However, the regression analysis suggests that, in the South African case, education is a better predictor of the likelihood of employment. This finding is consistent with the literature.
+
+<!-- Make title of bibliography here: -->
+
+\newpage
+
+# References {-}
+Burger, R. & Jafta, R. 2006. Returns to Race: Labour Market Discrimination in Post-Apartheid South Africa.  Stellenbosch Economic Working Papers: 04/06\. Available: https://resep.sun.ac.za/wp-content/uploads/2017/10/wp-04-2006.pdf [2021, April 27].
+
+Du Toit, M., De Witte, H., Rothmann, S. & Van den Broeck, A. 2018. Contextual factors and the experience of unemployment: A review of qualitative studies. *South African Journal of Economic and Management Sciences* [Electronic], 21(1):a2083. Available: http://www.scielo.org.za/pdf/sajems/v21n1/55.pdf [2021, April 20].
+
+Hanck, C., Arnold, M., Gerber, C. & Schmelzer, M. 2020. Introduction to Econometrics with R. Available: https://www.econometrics-with-r.org/11-rwabdv.html [2021, April 20].
+
+McDonough, P. & Amick B.C. 2001. The social context of health selection: a longitudinal study of health and employment. *Social Science & Medicine* [Electronic], 53:135–145. Available: https://pubmed.ncbi.nlm.nih.gov/11380159/ [2021, April 25].
+
+Pelkowski, J. & Berger, M. 2004. The impact of health on employment, wages, and hours worked over the life cycle. *The Quarterly Review of Economics and Finance* [Electronic], 44(1):102-121. Available: https://doi.org/10.1016/j.qref.2003.08.002 [2021, April 20].
+
+Schuring M, Burdorf L, Kunst A. 2007. The effects of ill health on entering and maintaining paid employment: evidence in European countries. *Journal of Epidemiology & Community Health* [Electronic], 61:597-604. Available: https://pubmed.ncbi.nlm.nih.gov/17568051/ [2021, April 28].
+
+Southern Africa Labour and Development Research Unit. 2018. National Income Dynamics Study 2017, Wave 5 [dataset]. Version 1.0.0 Pretoria: Department of Planning, Monitoring, and Evaluation [funding agency]. Cape Town: Southern Africa Labour and Development Research Unit [implementer], Cape Town: DataFirst [distributor]. Available: https://doi.org/10.25828/fw3h-v708 [2021, April 20]
+
+Statistics South Africa. 2018. *Labour market dynamics in South Africa, 2018* [Electronic]. Available: file:///C:/Users/Cassandra/OneDrive/Documents/2021%20Academics/Development/Essay%202/LMDSA%202018%20Statistical%20Release.pdf [2021, April 28].
+
+Statistics South Africa. *2019. Quarterly Labour Force Survey (QLFS), 4th Quarter 2019* [Electronic]. Available: http://www.statssa.gov.za/?page_id=1854&PPN=P0211&SCH=7622 [2021, April 21].
+
+Statistics South Africa. 2020. *Quarterly Labour Force Survey (QLFS), 4th Quarter 2020* [Electronic]. Available: http://www.statssa.gov.za/?page_id=1854&PPN=P0211&SCH=72942 [2021, April 21].
+
+Stauder, J. 2019. Unemployment, unemployment duration, and health: selection or causation? *The European Journal of Health Economics* [Electronic], 20:59–73. Available:  https://doi.org/10.1007/s10198-018-0982-2 [2021, April 24].
+
+van Rijn, R., Robroek, S., Brouwer, S., & Burdorf, A. 2014. Influence of Poor Health on Exit from Paid Employment: A Systematic Review. *Occupational & Environmental Medicine* [Electronic], 71(4):295-301. Available: https://oem.bmj.com/content/71/4/295 [2021, April 20].
+
+Vancea, M., & Utzet, M. 2017. How unemployment and precarious employment affect the health of young people: A scoping study on social determinants. *Scandinavian Journal of Public Health* [Electronic], 45(1):73-84. Available: https://link.springer.com/content/pdf/10.1007/s10198-018-0982-2.pdf [2021, April 20].
+
+
+

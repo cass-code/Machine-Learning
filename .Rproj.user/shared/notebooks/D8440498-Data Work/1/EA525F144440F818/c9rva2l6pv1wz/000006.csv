@@ -1,0 +1,19 @@
+"0","fit.svm <- train(race~., data=cleaned, method=""svmRadial"", metric=metric, trControl=control)
+fit.svm <- train(race~., data=cleaned, method=""svmRadial"", metric=metric, trControl=control)
+# Random Forest
+set.seed(7)
+fit.rf <- train(race~., data=cleaned, method=""rf"", metric=metric, trControl=control)
+"
+"1","note: only"
+"1"," "
+"1","2"
+"1"," "
+"1","unique complexity parameters in default grid."
+"1"," "
+"1","Truncating the grid to"
+"1"," "
+"1","2"
+"1"," "
+"1",".
+
+"

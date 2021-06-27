@@ -1,0 +1,15 @@
+"0","# list types for each attribute
+sapply(cleaned, class)
+"
+"1","      age "
+"1","   gender "
+"1","     race "
+"1","   income "
+"1","
+"
+"1","""numeric"" "
+"1","""numeric"" "
+"1"," ""factor"" "
+"1","""numeric"" "
+"1","
+"

@@ -1,0 +1,11 @@
+"0","# list the levels for the class
+levels(cleaned$race)
+"
+"1","[1]"
+"1"," ""African""     "
+"1"," ""Asian/Indian"""
+"1"," ""Coloured""    "
+"1"," ""Other""       "
+"1"," ""White""       "
+"1","
+"

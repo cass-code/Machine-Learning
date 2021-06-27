@@ -1,0 +1,9 @@
+"0","# list the levels for the class
+levels(dataset$Species)
+"
+"1","[1]"
+"1"," ""setosa""    "
+"1"," ""versicolor"""
+"1"," ""virginica"" "
+"1","
+"
