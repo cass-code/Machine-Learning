@@ -1,0 +1,5 @@
+"0","# use the remaining 80% of data to training and testing the models
+more.balanced <- more.balanced[val,]
+"
+"2","Error in xj[i] : invalid subscript type 'list'
+"

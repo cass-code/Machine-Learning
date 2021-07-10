@@ -1,8 +1,0 @@
-"0","# balanced data set with both over and under sampling
-# balanced data set with over-sampling
-balanced <- ovun.sample(race~., data=cleaned, N = 115, seed=1,
-method=""under"")
-"
-"2","Error in (function (formula, data, method, subset, na.action, N, p = 0.5,  : 
-  The response variable must have 2 levels.
-"

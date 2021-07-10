@@ -1,0 +1,95 @@
+---
+title: "Data Work"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<!-- Loading in packages -->
+
+```{r}
+#install.packages("e1071")
+#install.packages("caret")
+#install.packages("ROSE")
+install.packages("resample")
+library(caret)
+library(ggplot2)
+library(tidyverse)
+library(e1071)
+library(ROSE)
+```
+
+ <!-- Data import -->
+```{r}
+library(haven)
+Adult <- read_dta("data/nids-w5-v1.0.0-stata14/Adult_W5_Anon_V1.0.0.dta") # read in the NIDS data and name the data set Adult (which is the unit of observation)
+#View(Adult) # Having a look at the data
+#ls(Adult) 
+# We can get a quick idea of how many instances (rows) and how many attributes (columns) the data contains with the dim function:dimensions of dataset
+dim(cleaned)
+```
+
+<!-- Cleaning the data -->
+```{r}
+clean <- Adult %>% mutate(age = 2021 - w5_a_dob_y) %>% rename (gender = w5_a_gen, race = w5_a_popgrp, income = w5_a_em1pay, married = w5_a_evmar, school = w5_a_edschgrd, uni = w5_a_edter) %>% select(age, gender, race, income, married, school, uni) # The NIDS data set has many variables so just selecting the ones I want
+
+clean$race <- as.numeric(clean$race)
+
+cleaned <- clean %>% filter(race > 0, income >=0, gender >0, married >0, school >=0, uni >=0) %>% mutate(race = replace(race, race == 1, "African")) %>% mutate(race = replace(race, race == 2, "Coloured")) %>% mutate(race = replace(race, race == 3, "Asian/Indian")) %>% mutate(race = replace(race, race == 4, "White")) %>% mutate(race = replace(race, race == 5, "Other")) %>% filter(race == "African" |race == "Coloured" |race == "Asian/Indian" |race == "White") %>% drop_na() %>% mutate(age2 = age * age)
+```
+
+```{r}
+# list types for each attribute
+sapply(cleaned, class)
+cleaned$income <- as.numeric(cleaned$income) # realised that income and gender should be numeric
+cleaned$gender <- as.numeric(cleaned$gender)
+cleaned$married <- as.numeric(cleaned$married)
+cleaned$school <- as.numeric(cleaned$school)
+cleaned$uni <- as.numeric(cleaned$uni)
+cleaned$race <- as.factor(cleaned$race) # race needs to be a factor not a character
+```
+
+ 
+```{r}
+# create a list of 80% of the rows in the original dataset we can use for training
+validation_index <- createDataPartition(cleaned$income, p=0.80, list=FALSE)
+# select 20% of the data for validation
+validation <- cleaned[-validation_index,]
+# use the remaining 80% of data for training and testing the models
+cleaned <- cleaned[validation_index,]
+```
+
+
+
+```{r}
+list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
+g <- ML_Plot(cleaned)
+g
+```
+
+
+
+
+```{r}
+# summarize the class distribution
+percentage <- prop.table(table(cleaned$race)) * 100
+cbind(freq=table(cleaned$race), percentage=percentage)
+```
+
+```{r}
+summary(cleaned)
+```
+
+# Machine Learning bit
+
+```{r}
+# Linear regression
+set.seed(7)
+split <- initial_split(cleaned, prop = 0.7, strata = "income")
+train <- training(split) 
+test <- testing(split)
+```
+
+L

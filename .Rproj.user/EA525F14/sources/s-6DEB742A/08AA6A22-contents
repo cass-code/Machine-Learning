@@ -1,0 +1,77 @@
+---
+title: "ReadMe"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# ReadMe
+
+This R project contains the code and write up for my Data science 871 machine learning assignment.
+
+The data used is the NIDS data and should be downloaded into the data folder and read in using the haven package as the data has the extension .dta.
+
+All binary files can be found in the bin folder (which includes the questionnaire specific to the NIDS data used).
+The main project document is called 20346212MLProject.
+"Data Work.Rmd" and "Data Manipulation 2.Rmd" can be ignored - they were used for testing and checking code in a safe environment.
+
+All functions are stored in the folder code.
+All tex files and code used for referencing is stored in the Tex folder
+
+
+
+## Machine Learning Practice
+
+```{r}
+#install.packages("caret")
+library(caret)
+library(ggplot2)
+```
+
+```{r}
+# attach the iris dataset to the environment
+data(iris)
+# rename the dataset
+dataset <- iris
+```
+
+```{r}
+# create a list of 80% of the rows in the original dataset we can use for training
+validation_index <- createDataPartition(dataset$Species, p=0.80, list=FALSE)
+# select 20% of the data for validation
+validation <- dataset[-validation_index,]
+# use the remaining 80% of data to training and testing the models
+dataset <- dataset[validation_index,]
+```
+
+```{r}
+# We can get a quick idea of how many instances (rows) and how many attributes (columns) the data contains with the dim function.
+
+# dimensions of dataset
+dim(dataset)
+```
+```{r}
+# list types for each attribute
+sapply(dataset, class)
+```
+
+```{r}
+# take a peek at the first 5 rows of the data
+head(dataset, n=49)
+```
+
+```{r}
+# list the levels for the class
+levels(dataset$Species)
+```
+```{r}
+# summarize the class distribution
+percentage <- prop.table(table(dataset$Species)) * 100
+cbind(freq=table(dataset$Species), percentage=percentage)
+```
+
+```{r}
+summary(dataset)
+```
+
