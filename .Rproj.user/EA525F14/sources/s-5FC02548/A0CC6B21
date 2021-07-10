@@ -1,0 +1,27 @@
+{
+    "id": "A0CC6B21",
+    "path": "~/2021 Academics/Data Science/Machine Learning/Machine-Learning/code/draw_confusion_matrix.R",
+    "project_path": "code/draw_confusion_matrix.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1625948977931.0,
+    "source_on_save": false,
+    "relative_order": 11,
+    "properties": {
+        "tempName": "Untitled3",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "14,34",
+        "scrollLine": "21"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1625948838,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1625948838,
+    "read_only": false,
+    "read_only_alternatives": []
+}

@@ -183,7 +183,7 @@
 
 \begin{frontmatter}  %
 
-\title{Exloring Machine Learning}
+\title{Exploring Machine Learning}
 
 % Set to FALSE if wanting to remove title (for submission)
 
@@ -257,7 +257,21 @@ accuracy in predicting a person's race.
 \hypertarget{data}{%
 \section{\texorpdfstring{Data \label{Data}}{Data }}\label{data}}
 
-NIDS discussion
+The data used for this assignment was sourced from Wave 5 of the
+National Income Dynamics Survey (NIDS)
+(\protect\hyperlink{ref-nids}{\emph{National income dynamics study 2017,
+wave 5 dataset}} (\protect\hyperlink{ref-nids}{2018})). The survey is a
+nationally representative household panel study, which started in 2008
+with a group of over 28,000 individuals from 7,300 households. The same
+households are surveyed every 2 years for NIDS. The latest survey - wave
+5 - was conducted in 2017. For wave 5, a total of 39,434 individuals
+were interviewed; 20,113 of which were part of the original study - wave
+1 - and 2,016 were from a top-up sample. NIDS is funded by the
+Department of Planning, Monitoring and Evaluation and the survey is
+implemented by the Southern Africa Labour and Development Research Unit
+(SALDRU) at the University of Cape Town. The data set is comprehensive
+and covers topics relating to poverty, health, household composition,
+mortality, expenditure, income and employment.
 
 \hypertarget{machine-learning}{%
 \section{\texorpdfstring{Machine Learning
@@ -294,16 +308,16 @@ rate estimates that have relatively low bias and variance
 (\protect\hyperlink{ref-k}{2018a})). I have also set seed in the
 function for reproducibility.
 
-Based on the Mincerian wage equation, Regression 1 \ref{Regression}
-regresses log of income on age, years of schooling and a dummy variable
-for if a person has a tertiary qualification or not. Regression 2
-includes a variable for age-squared and the categorical variable race.
-Regression 3 includes a variable each for gender and marriage. The signs
-of the coefficients of the three regressions look fairly
-standard\footnote{This at least is a good indication that the data is
-  fairly well cleaned and is usable for testing the machine learning
-  techniques} and most of the coefficients are statistically significant
-at 1\% and lower.
+Based on the Mincerian wage equation, Regression 1 (see
+\ref{Regression}) regresses log of income on age, years of schooling and
+a dummy variable for if a person has a tertiary qualification or not.
+Regression 2 includes a variable for age-squared and the categorical
+variable race. Regression 3 includes a variable each for gender and
+marriage. The signs of the coefficients of the three regressions look
+fairly standard\footnote{This at least is a good indication that the
+  data is fairly well cleaned and is usable for testing the machine
+  learning techniques} and most of the coefficients are statistically
+significant at 1\% and lower.
 
  
   \providecommand{\huxb}[2]{\arrayrulecolor[RGB]{#1}\global\arrayrulewidth=#2pt}
@@ -532,14 +546,18 @@ performance of a regression model is the Root Mean Squared Error (RMSE)
 (\protect\hyperlink{ref-rmse}{2018b})).The RMSE measures the average
 error performed by the model in predicting the outcome for an
 observation. The mathematical formula for the RMSE is given by
-\[RMSE = \sqrt{((observeds - predicteds)^2)/N)}\] This implies lower the
+\[RMSE = \sqrt{(observeds - predicteds)^2/N)}\] This implies lower the
 RMSE, the better the model performs.
 
-\ref{Stats} reports the RMSES for both the training data and the test
-data. We can see that the RMSEs decreased from regression 1 to
+Table \ref{Stats} reports the RMSES for both the training data and the
+test data. We can see that the RMSEs decreased from regression 1 to
 regression 3 for both the training and test data. This indicates that
 regression 3 is a better model than both regressions 1 and 2 (and that
 regression 2 has better predictive power than regression 1). The RMSEs
+for the regression based on the training data are lower than for the
+test data. However, the RMSEs are close enough between the two data sets
+for all 3 models that the out-of-sample performance is fair; it does not
+seem that any of the models have been overfitted to the training data.
 
 \begin{table}[H]
 \centering
@@ -556,90 +574,79 @@ Reg 1 & 0.86 & 0.91 \\
 \end{tabular}
 \end{table}
 
-\includegraphics{20346212MLProject_files/figure-latex/unnamed-chunk-4-1.pdf}
+\includegraphics{"images/ridge.png"} \label{ridge}
 
-\includegraphics{20346212MLProject_files/figure-latex/unnamed-chunk-5-1.pdf}
+\includegraphics{"images/lasso.png"} \label{lasso}
 
-\begin{verbatim}
-## [1] "RMSE on training set: 0.752131288720079"
-## [1] "RMSE on test set: 0.882932895421073"
-## [1] "RMSE on training set: 0.752842149603987"
-## [1] "RMSE on test set: 0.88481632436016"
-## [1] "RMSE on training set: 0.752681521998011"
-## [1] "RMSE on test set: 0.885305140817852"
-\end{verbatim}
+tibble {[}3 x 1{]} (S3: tbl\_df/tbl/data.frame) \$ Reg: num {[}1:3{]}
+0.915 0.881 0.822 {[}1{]} ``RMSE on training set: 0.752131288720079''
+{[}1{]} ``RMSE on test set: 0.882932895421073'' {[}1{]} ``RMSE on
+training set: 0.752842149603987'' {[}1{]} ``RMSE on test set:
+0.88481632436016'' {[}1{]} ``RMSE on training set: 0.752681521998011''
+{[}1{]} ``RMSE on test set: 0.885305140817852'' {[}1{]} ``RMSE on
+training set: 0.760957159147364'' {[}1{]} ``RMSE on test set:
+0.734724499416784'' {[}1{]} ``RMSE on training set: 0.761176361760862''
+{[}1{]} ``RMSE on test set: 0.735047813129022'' {[}1{]} ``RMSE on
+training set: 0.76097313627485'' {[}1{]} ``RMSE on test set:
+0.734938202183037''
 
-\includegraphics{20346212MLProject_files/figure-latex/unnamed-chunk-6-1.pdf}
+\begin{table}[H]
+\centering
+\caption{Model RMSEs} 
+\label{RMSE}
+\begin{tabular}{lrrrrrr}
+  \hline
+Dataset & Lasso regression & linear model & Reg 1 & Reg 2 & Reg 3 & ridge regression \\ 
+  \hline
+Test & 0.89 & 0.88 & 0.91 & 0.88 & 0.82 & 0.88 \\ 
+  Train & 0.75 & 0.75 & 0.86 & 0.83 & 0.79 & 0.75 \\ 
+   \hline
+\end{tabular}
+\end{table}
 
-\begin{verbatim}
-## NULL
-\end{verbatim}
+If we wanted to compare all 6 models visually we could look at the bar
+graph below .
 
-\begin{verbatim}
-## [1] "RMSE on training set: 0.752131288720079"
-## [1] "RMSE on test set: 0.882932895421073"
-## [1] "RMSE on training set: 0.752842149603987"
-## [1] "RMSE on test set: 0.88481632436016"
-## [1] "RMSE on training set: 0.752681521998011"
-## [1] "RMSE on test set: 0.885305140817852"
-\end{verbatim}
-
-\begin{verbatim}
-## \begin{table}[H]
-## \centering
-## \caption{Model RMSEs} 
-## \label{RMSE}
-## \begin{tabular}{rrrrrr}
-##   \hline
-## Lasso regression & linear model & Reg 1 & Reg 2 & Reg 3 & ridge regression \\ 
-##   \hline
-## 0.89 & 0.88 & 0.91 & 0.88 & 0.82 & 0.88 \\ 
-##   0.75 & 0.75 & 0.86 & 0.83 & 0.79 & 0.75 \\ 
-##    \hline
-## \end{tabular}
-## \end{table}
-\end{verbatim}
+\includegraphics{"images/RMSE.png"} \label{RMSEimg}
 
 \hypertarget{predicting-race}{%
 \subsection{\texorpdfstring{Predicting Race
 \label{race}}{Predicting Race }}\label{predicting-race}}
 
-\begin{figure}[H]
-
-{\centering \includegraphics{20346212MLProject_files/figure-latex/Figure2-1} 
-
-}
-
-\caption{ML on \label{Figure2}}\label{fig:Figure2-1}
-\end{figure}
-\begin{figure}[H]
-
-{\centering \includegraphics{20346212MLProject_files/figure-latex/Figure2-2} 
-
-}
-
-\caption{ML on \label{Figure2}}\label{fig:Figure2-2}
+\begin{figure}
+\centering
+\includegraphics{"images/unbal.png"}
+\caption{Machine Learning applied to unbalanced data}
 \end{figure}
 
-\begin{figure}[H]
-
-{\centering \includegraphics{20346212MLProject_files/figure-latex/Figure3 -1} 
-
-}
-
-\caption{ML on balanced data}\label{fig:Figure3 }
+\begin{figure}
+\centering
+\includegraphics{"images/bal1.png"}
+\caption{Machine Learning applied to balanced (undersampled) data}
 \end{figure}
 
-\includegraphics{"images/Confusion Matrix LDA.png"}
-\includegraphics{"images/statslda.png"}
+\begin{figure}
+\centering
+\includegraphics{"images/bal2.png"}
+\caption{Machine Learning applied to balanced data}
+\end{figure}
+
+The graph below displays the confusion matrix and the tables report the
+relevant statistics.
+
+\begin{figure}
+\centering
+\includegraphics{"images/statssvm.png"}
+\caption{SVM Statistics}
+\end{figure}
 
 \begin{figure}[H]
 
-{\centering \includegraphics{20346212MLProject_files/figure-latex/Figure4-1} 
+{\centering \includegraphics{20346212MLProject_files/figure-latex/unnamed-chunk-8-1} 
 
 }
 
-\caption{Confusion Matrices \label{Figure3}}\label{fig:Figure4}
+\caption{Confusion Matrix \label{Figure3}}\label{fig:unnamed-chunk-8}
 \end{figure}
 
 \hypertarget{sequel}{%
@@ -671,6 +678,12 @@ Available:
 Katzke, N.F. 2017. \emph{{Texevier}: {P}ackage to create elsevier
 templates for rmarkdown}. Stellenbosch, South Africa: Bureau for
 Economic Research.
+
+\leavevmode\hypertarget{ref-nids}{}%
+\emph{National income dynamics study 2017, wave 5 dataset}. 2018. Cape
+Town, South Africa: Department of Planning, Monitoring,; Evaluation
+{[}funding agency{]} \& DataFirst {[}distributor{]}. {[}Online{]},
+Available: \url{https://doi.org/10.25828/fw3h-v708}.
 
 \leavevmode\hypertarget{ref-kfold}{}%
 Rodriguez, J.D., Perez, A. \& Lozano, J.A. 2009. Sensitivity analysis of

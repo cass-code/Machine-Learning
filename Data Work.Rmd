@@ -72,7 +72,7 @@ table(balanced.under$race)
 
 table(balanced1$race)
 
-# Blancing white and coloured
+# Balancing white and coloured
 balanced.under1 <- ovun.sample(race~., data=coloured, 
                                   p=0.5, seed=1, 
                                   method="under")$data

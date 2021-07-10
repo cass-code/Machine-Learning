@@ -3,7 +3,7 @@
 # Remove comments and add values where applicable.
 # The descriptions below should be self-explanatory
 
-title: "Exloring Machine Learning"
+title: "Exploring Machine Learning"
 #subtitle: "This will appear as Right Header"
 
 documentclass: "elsarticle"
@@ -130,7 +130,7 @@ Machine learning race is a topic that has ... One of the uses of machine learnin
 This paper is split into two main parts: part 1 \ref{ML} applies machine learning techniques to the NIDS dataset \ref{Data} and part 2 \ref{sequel} makes use of sequel to manipulate the NIDS dataset. The machine learning section first compares the effectiveness of linear regression and regularised regression on predicting people's incomes. Then 5 classification algorithms - Linear Discriminant Analysis, Classification and Regression Trees, k-Nearest Neighbors, Support Vector Machines with a linear kernel and Random Forest - are evaluated on their accuracy in predicting a person's race. 
 
 # Data  \label{Data}
-NIDS discussion
+The data used for this assignment was sourced from Wave 5 of the National Income Dynamics Survey (NIDS) (@nids). The survey is a nationally representative household panel study, which started in 2008 with a group of over 28,000 individuals from 7,300 households. The same households are surveyed every 2 years for NIDS. The latest survey - wave 5 - was conducted in 2017. For wave 5, a total of 39,434 individuals were interviewed; 20,113 of which were part of the original study - wave 1 - and 2,016 were from a top-up sample. NIDS is funded by the Department of Planning, Monitoring and Evaluation and the survey is implemented by the Southern Africa Labour and Development Research Unit (SALDRU) at the University of Cape Town. The data set is comprehensive and covers topics relating to poverty, health, household composition, mortality, expenditure, income and employment.
 
 
 # Machine Learning \label{ML}
@@ -149,7 +149,7 @@ Econometrics often makes use of regression analysis to model economic phenomena,
 
 Below, \ref{Regression} displays 3 different linear regressions of log of income using K-fold cross validation. For these regressions I built a function "linreg", which takes in a data frame, cleans and splits the data into a training (70% of the full data set) and a test set (30% of the full data set) and runs 3 different linear regressions, applying K-fold cross validation. The results of the regressions are then collected and stored in a list, which is returned by the function. I used k = 10, because empirically k=10 has been shown have test error rate estimates that have relatively low bias and variance (@k). I have also set seed in the function for reproducibility. 
 
-Based on the Mincerian wage equation, Regression 1 \ref{Regression} regresses log of income on age, years of schooling and a dummy variable for if a person has a tertiary qualification or not. Regression 2 includes a variable for age-squared and the categorical variable race. Regression 3 includes a variable each for gender and marriage. The signs of the coefficients of the three regressions look fairly standard^[This at least is a good indication that the data is fairly well cleaned and is usable for testing the machine learning techniques] and most of the coefficients are statistically significant at 1% and lower.
+Based on the Mincerian wage equation, Regression 1 (see \ref{Regression}) regresses log of income on age, years of schooling and a dummy variable for if a person has a tertiary qualification or not. Regression 2 includes a variable for age-squared and the categorical variable race. Regression 3 includes a variable each for gender and marriage. The signs of the coefficients of the three regressions look fairly standard^[This at least is a good indication that the data is fairly well cleaned and is usable for testing the machine learning techniques] and most of the coefficients are statistically significant at 1% and lower.
 
 ```{r, results = 'asis'}
 if(!require(huxtable)) install.packages(huxtable)
@@ -177,10 +177,10 @@ htab
 
 ```
 
-Typically, economists are interested in evaluating the performance of a model, which can be done by assessing how well the model predicts the outcome variable. A useful statistical metric for measuring the performance of a regression model is the Root Mean Squared Error (RMSE) (@rmse).The RMSE measures the average error performed by the model in predicting the outcome for an observation. The mathematical formula for the RMSE is given by $$RMSE = \sqrt{((observeds - predicteds)^2)/N)}$$ 
+Typically, economists are interested in evaluating the performance of a model, which can be done by assessing how well the model predicts the outcome variable. A useful statistical metric for measuring the performance of a regression model is the Root Mean Squared Error (RMSE) (@rmse).The RMSE measures the average error performed by the model in predicting the outcome for an observation. The mathematical formula for the RMSE is given by $$RMSE = \sqrt{(observeds - predicteds)^2/N)}$$ 
 This implies lower the RMSE, the better the model performs.
 
-\ref{Stats} reports the RMSES for both the training data and the test data. We can see that the RMSEs decreased from regression 1 to regression 3 for both the training and test data. This indicates that regression 3 is a better model than both regressions 1 and 2 (and that regression 2 has better predictive power than regression 1). The RMSEs
+Table \ref{Stats} reports the RMSES for both the training data and the test data. We can see that the RMSEs decreased from regression 1 to regression 3 for both the training and test data. This indicates that regression 3 is a better model than both regressions 1 and 2 (and that regression 2 has better predictive power than regression 1). The RMSEs for the regression based on the training data are lower than for the test data. However, the RMSEs are close enough between the two data sets for all 3 models that the out-of-sample performance is fair; it does not seem that any of the models have been overfitted to the training data.
 
 ```{r, results = 'asis'}
 # observations and RMSEs for each model
@@ -210,84 +210,65 @@ print.xtable(table,
 ```
 
 
-```{r, warning =  FALSE, fig.align = 'center', fig.height = 3, fig.width = 6, dev = 'png'}
-list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
-r <- plot_ridge(Adult)
-l <- plot_lasso(Adult)
-```
-
-
-```{r, echo = FALSE, include= TRUE, warning =  FALSE, results='asis'}
+```{r, warning =  FALSE, include=FALSE, fig.align = 'center', fig.height = 3, fig.width = 6, dev = 'png'}
 # list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
+# r <- plot_ridge(Adult)
 # l <- plot_lasso(Adult)
 ```
+<center>
 
-```{r, echo = FALSE, include= TRUE, warning =  FALSE, results = 'asis'}
-df <- comp_RMSE(Adult)
-df$variable <- as.character(df$variable)
-df <- df %>% mutate(variable = replace(variable, variable == "train.RMSE", "RMSE Train")) %>%
-  mutate(variable = replace(variable, variable == "test.RMSE", "RMSE Test"))
+![Ridge]("images/ridge.png") \label{ridge}
 
-source("code/linreg.R")
-#str(lm1)
-models<- linreg(Adult)
-source("code/linreg_pred.R")
-data1 <- linreg_pred(Adult) %>% tibble::as_tibble() 
-r<- models[[4]]
-#n<- models[[5]]
-names<- data.frame("name" = c("Reg 1", "Reg 2", "Reg 3"))
+</center>
 
-data <- bind_cols(names, r, data1) %>% rename("RMSE Train" = x, "RMSE Test" = Reg) %>% tibble::as_tibble()
-dff <- data %>% tidyr::gather(variable, value, -name)
-final <- bind_rows(df, dff)
+<center>
 
+![Lasso]("images/lasso.png") \label{lasso}
 
-  library(dplyr)
-  library(gridExtra)
-  library(grid)
-  library(ggplot2)
-  library(lattice)
+</center>
 
-  g <- ggplot(data=final, aes(x=name, y=value, fill=variable)) +
-    geom_bar(stat="identity", position=position_dodge()) +
-    scale_fill_hue(name="") +
-    xlab("") + ylab("RMSE") +
-    theme(text = element_text(size=12),
-          axis.text.x = element_text(angle = 45, hjust = 1))
- 
-  plot <- grid.draw(grid.arrange(g, ncol=1, top="RMSE comparison"))
+```{r, echo = FALSE, include= FALSE, message=FALSE, warning =  FALSE, results = 'FALSE'}
+# df <- comp_RMSE(Adult)
+# df$variable <- as.character(df$variable)
+# df <- df %>% mutate(variable = replace(variable, variable == "train.RMSE", "RMSE Train")) %>%
+#   mutate(variable = replace(variable, variable == "test.RMSE", "RMSE Test"))
+# 
+# source("code/linreg.R")
+# #str(lm1)
+# models<- linreg(Adult)
+# source("code/linreg_pred.R")
+# data1 <- linreg_pred(Adult) %>% tibble::as_tibble()
+# r<- models[[4]]
+# #n<- models[[5]]
+# names<- data.frame("name" = c("Reg 1", "Reg 2", "Reg 3"))
+# 
+# data <- bind_cols(names, r, data1) %>% rename("RMSE Train" = x, "RMSE Test" = Reg) %>% tibble::as_tibble()
+# dff <- data %>% tidyr::gather(variable, value, -name)
+# final <- bind_rows(df, dff)
+# 
+#   library(dplyr)
+#   library(gridExtra)
+#   library(grid)
+#   library(ggplot2)
+#   library(lattice)
+# 
+#   g <- ggplot(data=final, aes(x=name, y=value, fill=variable)) +
+#     geom_bar(stat="identity", position=position_dodge()) +
+#     scale_fill_hue(name="") +
+#     xlab("") + ylab("RMSE") +
+#     theme(text = element_text(size=12),
+#           axis.text.x = element_text(angle = 45, hjust = 1))
+# 
+#   plot <- grid.draw(grid.arrange(g, ncol=1, top="RMSE comparison"))
   
 ```
 
-```{r, echo = FALSE, include= TRUE, warning =  FALSE, results = 'asis'}
-df <- comp_RMSE(Adult)
-df$variable <- as.character(df$variable)
-df <- df %>% mutate(variable = replace(variable, variable == "train.RMSE", "RMSE Train")) %>%
-  mutate(variable = replace(variable, variable == "test.RMSE", "RMSE Test"))
+```{r, echo = FALSE, include= TRUE, warning =  FALSE, message=FALSE, results = 'asis'}
+list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
 
-source("code/linreg.R")
-#str(lm1)
-models<- linreg(Adult)
-source("code/linreg_pred.R")
-data1 <- linreg_pred(Adult) %>% tibble::as_tibble() 
-r<- models[[4]]
-#n<- models[[5]]
-names<- data.frame("name" = c("Reg 1", "Reg 2", "Reg 3"))
-
-data <- bind_cols(names, r, data1) %>% rename("RMSE Train" = x, "RMSE Test" = Reg) %>% tibble::as_tibble()
-dff <- data %>% tidyr::gather(variable, value, -name)
-final <- bind_rows(df, dff)
-
-library(dplyr)
-
-df1 <- comp_table(Adult)
-data <- final %>% tibble::as_tibble() %>% tidyr::spread(key = name,value = value) %>% as.data.frame() %>% select(-variable)
-names<- data.frame("Data set" = c("Test", "Train"))
-data1 <- bind_cols(names, data)
-#str(data)
-library(xtable)
-
-table <- xtable(data, caption = "Model RMSEs", label = "RMSE")
+str(data1)
+data1 <- RMSE_data(Adult)
+table <- xtable(data1, caption = "Model RMSEs", label = "RMSE")
 print.xtable(table,
              # tabular.environment = "longtable",
              floating = TRUE,
@@ -298,122 +279,154 @@ print.xtable(table,
              caption.placement = 'top'
 )
 
-  
-  
 ```
 
+If we wanted to compare all 6 models visually we could look at the bar graph below .
+
+<center>
+
+![RMSE comparison]("images/RMSE.png") \label{RMSEimg}
+
+</center>
 
 
 ## Predicting Race \label{race}
 
-```{r Figure2, warning =  FALSE, fig.align = 'center', fig.cap = "ML on \\label{Figure2}", fig.height = 3, fig.width = 6, dev = 'png'}
+```{r, warning =  FALSE, fig.align = 'center', fig.cap = "ML on unbalanced data", fig.height = 3, fig.width = 6, dev = 'png'}
 # list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
-source("code/clean.R")
-cleaned <- clean(Adult)
-source("code/ML_Plot.R")
-unbal <-ML_Plot(cleaned) # running the machine learning algorithms on unbalanced data
-plot(unbal)
+# cleaned <- clean(Adult)
+# unbal <-ML_Plot(cleaned) # running the machine learning algorithms on unbalanced data
+# plot(unbal)
+```
 
+
+```{r Figure2, warning =  FALSE, fig.align = 'center', fig.cap = "ML on balanced data (undersampled) \\label{Figure2}", fig.height = 3, fig.width = 6, dev = 'png'}
 ### This balancing section was in a function but it kept breaking the document when I tried to knit so I unfortunately had to pull it out and put it here
 
-library(ROSE)
-library(tidyverse)
-library(dplyr)
-africa <- cleaned %>% filter(race == "African" | race == "White") # First splitting the dataset
-coloured <- cleaned %>% filter(race == "Coloured" | race == "White")
-  # balanced data set with under-sampling
-  balanced.under <- ovun.sample(race~., data=africa,
-                                p=0.5, seed=1,
-                                method="under")$data
-
-  # Balancing white and coloured
-  balanced.under1 <- ovun.sample(race~., data=coloured,
-                                 p=0.5, seed=1,
-                                 method="under")$data
-
-  colour <- balanced.under1 %>% filter(race == "Coloured")
-  asia <- cleaned %>% filter(race == "Asian/Indian")
-
-  bal_under <- bind_rows(balanced.under, colour, asia)
-  bal1 <- bal_under %>% tibble::as_tibble()
-# #str(cleaned)
-# #str(bal1)
-# source("code/balance_both.R")
-# bal2 <- balance_both(Adult) %>% tibble::as_tibble()
-source("code/ML_Plot.R")
-balu <- ML_Plot(bal1) # running the machine learning algorithms on balanced (undersampled) data
-plot(balu)
+# library(ROSE)
+# library(tidyverse)
+# library(dplyr)
+# africa <- cleaned %>% filter(race == "African" | race == "White") # First splitting the dataset
+# coloured <- cleaned %>% filter(race == "Coloured" | race == "White")
+#   # balanced data set with under-sampling
+#   balanced.under <- ovun.sample(race~., data=africa,
+#                                 p=0.5, seed=1,
+#                                 method="under")$data
+# 
+#   # Balancing white and coloured
+#   balanced.under1 <- ovun.sample(race~., data=coloured,
+#                                  p=0.5, seed=1,
+#                                  method="under")$data
+# 
+#   colour <- balanced.under1 %>% filter(race == "Coloured")
+#   asia <- cleaned %>% filter(race == "Asian/Indian")
+# 
+#   bal_under <- bind_rows(balanced.under, colour, asia)
+#   bal1 <- bal_under %>% tibble::as_tibble()
+# # #str(cleaned)
+# # #str(bal1)
+# # source("code/balance_both.R")
+# # bal2 <- balance_both(Adult) %>% tibble::as_tibble()
 # source("code/ML_Plot.R")
-# balb <- ML_Plot(bal2) # running the machine learning algorithms on balanced(both sampled) data
-# plot(balb)
+# balu <- ML_Plot(bal1) # running the machine learning algorithms on balanced (undersampled) data
+# plot(balu)
 ```
 
 
 ```{r Figure3 , warning =  FALSE, fig.align = 'center', fig.cap = "ML on balanced data", fig.height = 3, fig.width = 6, dev = 'png'}
 # list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
-source("code/clean.R")
-cleaned <- clean(Adult)
-
-### This balancing section was also in a function but it kept breaking the document when I tried to knit so I unfortunately had to pull it out and put it here
-
-library(ROSE)
-library(tidyverse)
-library(dplyr)
-
-  africa <- cleaned %>% filter(race == "African" | race == "White") # First splitting the dataset
-  coloured <- cleaned %>% filter(race == "Coloured" | race == "African")
-  asian <- cleaned %>% filter(race == "Asian/Indian" | race == "African")
-
-# balanced data set with both-sampling
-  balanced.both <- ovun.sample(race~., data=africa,
-                               p=0.5, seed=1,
-                               method="both")$data
-
-  white <- balanced.both %>% filter(race == "White")
-
-  # Balancing African and coloured
-  balanced.both1 <- ovun.sample(race~., data=coloured,
-                                p=0.5, seed=1,
-                                method="both")$data
-
-
-
-  colour <- balanced.both1 %>% filter(race == "Coloured")
-
-  # Balancing African and Asian
-  balanced.both2 <- ovun.sample(race~., data=asian,
-                                p=0.5, seed=1,
-                                method="both")$data
-
-  asia <- balanced.both2 %>% filter(race == "Asian/Indian")
-
-  bal_both <- bind_rows(balanced.both1, white, asia)
-
-  bal2 <-  bal_both %>% tibble::as_tibble()
-  source("code/ML_Plot.R")
-  balb <- ML_Plot(bal1) # running the machine learning algorithms on balanced(both sampled) data
-  plot(balb)
+# source("code/clean.R")
+# cleaned <- clean(Adult)
+# 
+# ### This balancing section was also in a function but it kept breaking the document when I tried to knit so I unfortunately had to pull it out and put it here
+# 
+# library(ROSE)
+# library(tidyverse)
+# library(dplyr)
+# 
+#   africa <- cleaned %>% filter(race == "African" | race == "White") # First splitting the dataset
+#   coloured <- cleaned %>% filter(race == "Coloured" | race == "African")
+#   asian <- cleaned %>% filter(race == "Asian/Indian" | race == "African")
+# 
+# # balanced data set with both-sampling
+#   balanced.both <- ovun.sample(race~., data=africa,
+#                                p=0.5, seed=1,
+#                                method="both")$data
+# 
+#   white <- balanced.both %>% filter(race == "White")
+# 
+#   # Balancing African and coloured
+#   balanced.both1 <- ovun.sample(race~., data=coloured,
+#                                 p=0.5, seed=1,
+#                                 method="both")$data
+# 
+# 
+# 
+#   colour <- balanced.both1 %>% filter(race == "Coloured")
+# 
+#   # Balancing African and Asian
+#   balanced.both2 <- ovun.sample(race~., data=asian,
+#                                 p=0.5, seed=1,
+#                                 method="both")$data
+# 
+#   asia <- balanced.both2 %>% filter(race == "Asian/Indian")
+# 
+#   bal_both <- bind_rows(balanced.both1, white, asia)
+# 
+#   bal2 <-  bal_both %>% tibble::as_tibble()
+#   source("code/ML_Plot.R")
+#   balb <- ML_Plot(bal1) # running the machine learning algorithms on balanced (both sampled) data
+#   plot(balb)
 ```
+<center>
+
+![Machine Learning applied to unbalanced data]("images/unbal.png") 
+
+</center>
+
+<center>
+
+![Machine Learning applied to balanced (undersampled) data]("images/bal1.png") 
+
+</center>
+
+<center>
+
+![Machine Learning applied to balanced data]("images/bal2.png")
+
+</center>
 
 
-![LDA Confusion Matrix]("images/Confusion Matrix LDA.png")
-![LDA Statistics]("images/statslda.png")
 
-```{r Figure4, warning =  FALSE, fig.align = 'center', fig.cap = "Confusion Matrices \\label{Figure3}", fig.height = 3, fig.width = 6, dev = 'png'}
+The graph below displays the confusion matrix and the tables report the relevant statistics. 
+
+<!-- ```{r, warning =  FALSE, fig.align = 'center', fig.cap = "Confusion Matrix SVM \\label{confmat}", fig.height = 3, fig.width = 6, dev = 'png'} -->
+<!-- library(png) -->
+<!-- library(grid) -->
+<!-- img <- readPNG("images/cmsvm.png") -->
+<!-- grid.raster(img)  -->
+<!-- ``` -->
+
+<center>
+
+![SVM Statistics]("images/statssvm.png")
+
+</center>
+
+```{r dpi=350, include = TRUE, warning =  FALSE, fig.align = 'center', fig.cap = "Confusion Matrix \\label{Figure3}", dev = 'png'}
+# I saved the output g1 as an image: cmsvm.png
 list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
 cleaned <- clean(Adult)
-predicted <- ML_Predict(cleaned)
-g1 <-draw_confusion_matrix(predicted[[3]])
+predicted <- ML_Predict(cleaned) # prediction results
+g1 <-draw_confusion_matrix(predicted[[5]]) # visualising the confusion matrix for rf
 ```
 
-
-```{r Figure5, warning =  FALSE, fig.align = 'center', fig.cap = "Confusion Matrices \\label{Figure3}", fig.height = 4, fig.width = 6, dev = 'png'}
-# 
+```{r Figure5, warning =  FALSE, fig.align = 'center', fig.height = 4, fig.width = 6, dev = 'png'}
+# svm
 # list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
 # cleaned <- clean(Adult)
-# predicted <- ML_Predict(cleaned)
-# 
-# g2 <- draw_confusion_stats(predicted[[3]])
+# predicted <- ML_Predict(cleaned) #svm prediction results
+# g2 <- draw_confusion_stats(predicted[[4]]) # tabulating the statistics
 ```
 
 # Sequel \label{sequel}

@@ -4,7 +4,10 @@ draw_confusion_matrix <- function(cm) {
     # extract the confusion matrix values as data.frame
     cm_d <- as.data.frame(cm$table)
     # confusion matrix statistics as data.frame
-    cm_st <-data.frame(cm$overall)
+
+
+    cm_st <- data.frame(cm$overall) %>% slice(c(1, 2)) %>% rename("Statistics"="cm.overall")
+
     # confusion matrix byClass to look at sensitivity and specificity etc as data.frame
     cm_cl1 <-data.frame(cm$byClass) %>% select("Sensitivity", "Specificity", "Pos.Pred.Value", "Neg.Pred.Value", "Precision") %>%
         rename("Sen" = "Sensitivity", "Spec" = "Specificity", "Pos" = "Pos.Pred.Value", "Neg" = "Neg.Pred.Value", "Prec" = "Precision")
@@ -12,7 +15,8 @@ draw_confusion_matrix <- function(cm) {
         rename("Rec"="Recall", "Prev" = "Prevalence", "DetRat" = "Detection.Rate", "DetPrev" = "Detection.Prevalence", "BalAcc" = "Balanced.Accuracy")
 
     # round the values
-    cm_st$cm.overall <- round(cm_st$cm.overall,2)
+    #cm_st$cm.overall <- round(cm_st$cm.overall,2)
+    cm_st$Statistics <- round(cm_st$Statistics,2)
     cm_cl1 <- round(cm_cl1,2)
     cm_cl2 <- round(cm_cl2,2)
 
@@ -33,17 +37,19 @@ draw_confusion_matrix <- function(cm) {
         theme_light() +
         guides(fill=FALSE)
 
-    cm_d_p <- cm_d_p + scale_fill_distiller(palette = "Greens", direction = 1)
+    cm_d_p <- cm_d_p + scale_fill_distiller(palette = "Greens", direction = 1) # specifying the colour palette I want
 
 
     # plotting the stats
 
     cm_cl_p1 <- tableGrob(cm_cl1)
     cm_cl_p2 <- tableGrob(cm_cl2)
-    cm_st_p <- tableGrob(cm_st)
+    cm_st_p <-  tableGrob(cm_st)
+
+
 
     # arranging all the graphs
-    a <-  grid.arrange(cm_d_p, cm_st_p, nrow = 1, ncol = 2,
-                       top=textGrob("Confusion Matrix",gp=gpar(fontsize=25,font=1)))
+    a <-  grid.arrange(cm_d_p, cm_st_p, nrow = 2, ncol = 1,
+                       top=textGrob("",gp=gpar(fontsize=25,font=1)))
     a
 }
