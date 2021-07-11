@@ -229,23 +229,50 @@
 
 
 
+%titlepage
+\thispagestyle{empty}
+\begin{center}
+\begin{minipage}{0.75\linewidth}
+    \centering
+%Entry1
+    {\uppercase{\huge Exploring Machine Learning: Predicting Income and
+Race\par}}
+    \vspace{2cm}
+%Author's name
+    {\LARGE Cassandra Pengelly \textbar{} 20346212\par}
+    \vspace{1cm}
+%University logo
+\begin{center}
+    \includegraphics[width=0.5\linewidth]{images/m.jpg}
+\end{center}
+\vspace{1cm}
+%Supervisor's Details
+\begin{center}
+    {\Large Data Science 871: Machine Learning Project\par}
+    \vspace{1cm}
+%Degree
+    {\large \par}
+    \vspace{1cm}
+%Institution
+    {\large \par}
+    \vspace{1cm}
+%Date
+    {\large }
+%More
+    {\normalsize }
+%More
+    {\normalsize }
+\end{center}
+\end{minipage}
+\end{center}
+\clearpage
+
+
 \begin{frontmatter}  %
 
-\title{Exploring Machine Learning and Predicting Income}
+\title{}
 
 % Set to FALSE if wanting to remove title (for submission)
-
-
-
-
-\author[Add1]{Cassandra Pengelly}
-\ead{20346212@sun.ac.za}
-
-
-
-
-
-
 
 
 \vspace{1cm}
@@ -259,6 +286,8 @@
 \end{frontmatter}
 
 
+\renewcommand{\contentsname}{Table of Contents}
+{\tableofcontents}
 
 %________________________
 % Header and Footers
@@ -281,6 +310,8 @@
 
 
 
+\newpage
+
 \hypertarget{introduction}{%
 \section{\texorpdfstring{Introduction
 \label{Introduction}}{Introduction }}\label{introduction}}
@@ -299,7 +330,7 @@ First, the data set - NIDS - is discussed in section \ref{Data}; then
 the methodology is explained in section \ref{Meth}. Section \ref{ML}
 applies machine learning techniques to the NIDS data set, and comprises
 two subsections. The first subsection (\ref{income}) compares the
-effectiveness of linear regression and regularised regression on
+effectiveness of linear regression and regularized regression on
 predicting people's incomes. The second subsection (\ref{race})
 evaluated 5 classification algrithms - Linear Discriminant Analysis,
 Classification and Regression Trees, k-Nearest Neighbors, Support Vector
@@ -427,12 +458,14 @@ function to merge them.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{SELECT} \FloatTok{2021.0} \OperatorTok{{-}}\NormalTok{ \textasciigrave{}w5\_a\_dob\_y\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}age\textasciigrave{}, \textasciigrave{}w5\_a\_gen\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}gender\textasciigrave{}, \textasciigrave{}w5\_a\_popgrp\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}race\textasciigrave{}, }
-\NormalTok{\textasciigrave{}w5\_a\_em1pay\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}income\textasciigrave{}, \textasciigrave{}w5\_a\_mar\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}married\textasciigrave{}, \textasciigrave{}w5\_a\_edschgrd\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}school\textasciigrave{}, }
+\KeywordTok{SELECT} \FloatTok{2021.0} \OperatorTok{{-}}\NormalTok{ \textasciigrave{}w5\_a\_dob\_y\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}age\textasciigrave{}, \textasciigrave{}w5\_a\_gen\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}gender\textasciigrave{}, }
+\NormalTok{\textasciigrave{}w5\_a\_popgrp\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}race\textasciigrave{}, \textasciigrave{}w5\_a\_em1pay\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}income\textasciigrave{}, }
+\NormalTok{\textasciigrave{}w5\_a\_mar\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}married\textasciigrave{}, \textasciigrave{}w5\_a\_edschgrd\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}school\textasciigrave{}, }
 \NormalTok{\textasciigrave{}w5\_a\_edter\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}tertiary\textasciigrave{} }\KeywordTok{FROM}\NormalTok{ \textasciigrave{}wave5\textasciigrave{}}
 \KeywordTok{UNION} \KeywordTok{ALL}
-\KeywordTok{SELECT} \FloatTok{2021.0} \OperatorTok{{-}}\NormalTok{ \textasciigrave{}w4\_a\_dob\_y\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}age\textasciigrave{}, \textasciigrave{}w4\_a\_gen\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}gender\textasciigrave{}, \textasciigrave{}w4\_a\_popgrp\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}race\textasciigrave{}, }
-\NormalTok{\textasciigrave{}w4\_a\_em1pay\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}income\textasciigrave{}, \textasciigrave{}w4\_a\_mar\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}married\textasciigrave{}, \textasciigrave{}w4\_a\_edschgrd\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}school\textasciigrave{}, }
+\KeywordTok{SELECT} \FloatTok{2021.0} \OperatorTok{{-}}\NormalTok{ \textasciigrave{}w4\_a\_dob\_y\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}age\textasciigrave{}, \textasciigrave{}w4\_a\_gen\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}gender\textasciigrave{}, }
+\NormalTok{\textasciigrave{}w4\_a\_popgrp\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}race\textasciigrave{}, \textasciigrave{}w4\_a\_em1pay\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}income\textasciigrave{}, }
+\NormalTok{\textasciigrave{}w4\_a\_mar\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}married\textasciigrave{}, \textasciigrave{}w4\_a\_edschgrd\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}school\textasciigrave{}, }
 \NormalTok{\textasciigrave{}w4\_a\_edter\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}tertiary\textasciigrave{} }\KeywordTok{FROM}\NormalTok{ \textasciigrave{}wave4\textasciigrave{}}
 \end{Highlighting}
 \end{Shaded}
@@ -743,7 +776,7 @@ performance of a regression model is the Root Mean Squared Error (RMSE)
 (\protect\hyperlink{ref-rmse}{2018b})).The RMSE measures the average
 error performed by the model in predicting the outcome for an
 observation. The mathematical formula for the RMSE is given by
-\[RMSE = mean(\sqrt{(observeds - predicteds)^2))}\] This implies lower
+\[RMSE = mean(\sqrt{(observeds - predicteds)^2)})\] This implies lower
 the RMSE, the better the model performs.
 
 Table \ref{Stats} reports the RMSES for both the training data and the
@@ -771,14 +804,62 @@ Reg 1 & 0.86 & 0.91 \\
 \end{tabular}
 \end{table}
 
-\includegraphics{"images/ridge.png"} \label{ridge}
+The table above shows that as more explanatory variables are added to
+the regression, it appears that the model improves in predictive power.
+However, it could actually be the case that the model is over fitting
+the data. One method of addressing this issue is to use regularized
+regression, which constrains the estimated coefficients. It does this by
+introducing a penalty parameter in the objective function such that the
+sum of the sum of squared errors and the penalty parameter is minimised.
+Two common penalty parameters include the ridge and lasso methods.
 
-\includegraphics{"images/lasso.png"} \label{lasso}
+To apply the ridge and lasso methods I created two functions:
+`plot\_ridge' and `plot\_lasso'. These functions use the `glmnet'
+package to run the regressions and return a plot of the results, which
+are reported below. The tuning parameter here is given by \(\lambda\).
+Initially, as \(\lambda\) increases there is a decrease in the
+mean-squared error (MSE) for the lasso method, where the first dotted
+line indicates the lowest MSE. For the smaller values of lambda, this
+means that the lasso models has improved upon the OLS model - it is
+providing a better fit. In the ridge model, as \(\lambda\) increases,
+the coefficient sizes are being reduced but the number of coefficients
+remains the same. In the lasso model, after the log of \(\lambda\)
+increases to more than -3, the number of parameters starts to decrease.
 
-If we wanted to compare all 6 models visually we could look at the bar
-graph below .
+\begin{figure}
+\centering
+\includegraphics{"images/ridge.png"}
+\caption{Ridge}
+\end{figure}
 
-\includegraphics{"images/RMSE.png"} \label{RMSEimg}
+\begin{figure}
+\centering
+\includegraphics{"images/lasso.png"}
+\caption{Lasso}
+\end{figure}
+
+I then created a function `comp\_RMSE', which finds the \(\lambda\) that
+minimises the RMSEs for the ridge and lasso models and records the
+minimised RMSEs. These models are then used to predict the log of income
+for the test data. The bar chart below displays the RMSEs for the ridge
+and lasso models and compares them to a base linear regression and the
+three regressions from \ref{Regression}. Here, I adjusted the code from
+\protect\hyperlink{ref-ridge}{Hartmann \& Waske}
+(\protect\hyperlink{ref-ridge}{2018}) tutorial.
+
+The graphs again shows that the RMSEs are lower for the training data
+than for the test data for all the models.
+
+\begin{figure}
+\centering
+\includegraphics{"images/RMSE.png"}
+\caption{RMSE comparison}
+\end{figure}
+
+While economists are interested in predicting wage based on variables
+such as race and education, it might be interesting to see if race can
+be predicted using income and other variables. The next section explores
+this idea by applying classification algorithms on the NIDS data set.
 
 \hypertarget{predicting-race}{%
 \subsection{\texorpdfstring{Predicting Race
@@ -828,6 +909,10 @@ relevant statistics.
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
+\leavevmode\hypertarget{ref-ridge}{}%
+Hartmann, K., K \& Waske, B. 2018. E-learning project SOGA: Statistics
+and geospatial data analysis.
+
 \leavevmode\hypertarget{ref-k}{}%
 Kassambara, A. 2018a. Cross-validation essentials in r.
 
@@ -858,20 +943,6 @@ Studenmund, A.H. 2014. \emph{Using econometrics a practical guide}.
 Pearson.
 
 \end{CSLReferences}
-
-\hypertarget{appendix}{%
-\section*{Appendix}\label{appendix}}
-\addcontentsline{toc}{section}{Appendix}
-
-\hypertarget{appendix-a}{%
-\subsection*{Appendix A}\label{appendix-a}}
-\addcontentsline{toc}{subsection}{Appendix A}
-
-Some appendix information here
-
-\hypertarget{appendix-b}{%
-\subsection*{Appendix B}\label{appendix-b}}
-\addcontentsline{toc}{subsection}{Appendix B}
 
 \bibliography{Tex/ref}
 

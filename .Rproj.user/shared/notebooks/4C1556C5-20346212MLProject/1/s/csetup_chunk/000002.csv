@@ -7,39 +7,21 @@
 "2","Loading required package: e1071
 "
 "2","package ‘e1071’ was built under R version 4.0.5"
-"0","if(!require(""haven"")) install.packages(""haven"")"
-"2","Loading required package: haven
-"
-"0","if(!require(""glmnet"")) install.packages(""glmnet"")"
-"2","Loading required package: glmnet
-"
-"2","package ‘glmnet’ was built under R version 4.0.5"
-"2","Loading required package: Matrix
-"
 "2","
-Attaching package: ‘Matrix’
+Attaching package: ‘e1071’
 
 "
-"2","The following objects are masked from ‘package:tidyr’:
-
-    expand, pack, unpack
-
-"
-"2","Loaded glmnet 4.1-2
-"
-"0","if(!require(""rsample"")) install.packages(""rsample"")"
-"2","Loading required package: rsample
-"
-"2","package ‘rsample’ was built under R version 4.0.5"
-"2","
-Attaching package: ‘rsample’
-
-"
-"2","The following object is masked from ‘package:e1071’:
+"2","The following object is masked from ‘package:rsample’:
 
     permutations
 
 "
+"0","if(!require(""haven"")) install.packages(""haven"")"
+"2","Loading required package: haven
+"
+"0","if(!require(""glmnet"")) install.packages(""glmnet"")"
+"0","if(!require(""rsample"")) install.packages(""rsample"")"
+"0",""
 "0","library(caret)"
 "0","library(ggplot2)"
 "0","library(tidyverse)"

@@ -13,23 +13,31 @@ comp_table <- function(Adult){
   library(ggplot2)
   library(lattice)
 
-  # cleaning data
-  clean <- Adult %>% mutate(age = 2021 - w5_a_dob_y) %>% rename (gender = w5_a_gen, race = w5_a_popgrp, income = w5_a_em1pay, married = w5_a_evmar, school = w5_a_edschgrd, uni = w5_a_edter) %>% select(age, gender, race, income, married, school, uni) # The NIDS data set has many variables so just selecting the ones I want
+  clean <- Adult %>% mutate(age = 2021 - w5_a_dob_y) %>%
+    rename (gender = w5_a_gen, race = w5_a_popgrp, income = w5_a_em1pay, married = w5_a_mar, school = w5_a_edschgrd, tertiary = w5_a_edter) %>%
+    select(age, gender, race, income, married, school, tertiary) # The NIDS data set has many variables so just selecting the ones I want
   clean$race <- as.numeric(clean$race)
-  cleaned <- clean %>% filter(race > 0, income >0, gender >0, married >0, school >=0, uni >=0) %>%
+  cleaned <- clean %>% filter(race > 0, income >0, gender >0, married >0, school >=0, tertiary >=0) %>%
     mutate(race = replace(race, race == 1, "African")) %>% mutate(race = replace(race, race == 2, "Coloured")) %>%
     mutate(race = replace(race, race == 3, "Asian/Indian")) %>% mutate(race = replace(race, race == 4, "White")) %>%
     mutate(race = replace(race, race == 5, "Other")) %>%
-    filter(race == "African" |race == "Coloured" |race == "Asian/Indian" |race == "White") %>% drop_na() %>%
+    filter(race == "African" |race == "Coloured" |race == "Asian/Indian" |race == "White") %>%
     mutate(age2 = age * age) %>%
-    mutate(income = replace(income, income > 0, log(income))) %>% drop_na()
+    mutate(income = replace(income, income > 0, log(income))) %>%
+    mutate(gender = replace(gender, gender == 2, 0)) %>%
+    mutate(tertiary = replace(tertiary, tertiary == 2, 0)) %>%
+    mutate(married = replace(married, married >= 2, 0)) %>%
+    rename (male = gender) %>%
+    drop_na()
 
-  cleaned$income <- as.numeric(cleaned$income) # realised that income and gender should be numeric
-  cleaned$gender <- as.numeric(cleaned$gender)
+
+  cleaned$income <- as.numeric(cleaned$income) # realised these should be numeric
+  cleaned$gender <- as.numeric(cleaned$male)
   cleaned$married <- as.numeric(cleaned$married)
   cleaned$school <- as.numeric(cleaned$school)
-  cleaned$uni <- as.numeric(cleaned$uni)
+  cleaned$tertiary <- as.numeric(cleaned$tertiary)
   cleaned$race <- as.factor(cleaned$race)
+
 
   # construct training data
 
@@ -70,9 +78,9 @@ comp_table <- function(Adult){
   # linear regressions
 
   # calculate rmse on training set
-  lin_model <- lm(formula = income ~ age + age2 + gender + race + married + school + uni,
+  lin_model <- lm(formula = income ~ age + age2 + male + race + married + school + tertiary,
                   data = income_train)
-  #print(paste('RMSE on training set:', rmse(lin_model)))
+  print(paste('RMSE on training set:', rmse(lin_model)))
 
   #store model object and results of rmse in the `list` object named `model.outcome`
   model.outcome[['baseline']] = list('model' = lin_model,
@@ -81,7 +89,7 @@ comp_table <- function(Adult){
                                                           'test.RMSE' = NA))
   # predict
   lin.model.pred <- predict(lin_model, newdata = income_test)
-  #print(paste('RMSE on test set:', rmse2(Y.test, lin.model.pred))) # calculate RMSE for the test data set
+  print(paste('RMSE on test set:', rmse2(Y.test, lin.model.pred))) # calculate RMSE for the test data set
   # store rmse for the test data set in the proper slot of the `list` object named `model.outcome`
   model.outcome[['baseline']]$rmse$test.RMSE <- rmse2(Y.test, lin.model.pred)
 
@@ -105,11 +113,11 @@ comp_table <- function(Adult){
   # prediction for the training set
   ridge.pred.train = predict(ridge, X.train, s = "lambda.min")
   # calculate rmse on training set
-  #print(paste('RMSE on training set:', rmse2(ridge.pred.train, Y.train)))
+  print(paste('RMSE on training set:', rmse2(ridge.pred.train, Y.train)))
   # prediction for the test set
-  #ridge.pred.test = predict(ridge, X.test, s = "lambda.min")
+  ridge.pred.test = predict(ridge, X.test, s = "lambda.min")
   # calculate RMSE for the test data set
-  #print(paste('RMSE on test set:', rmse2(ridge.pred.test, Y.test)))
+  print(paste('RMSE on test set:', rmse2(ridge.pred.test, Y.test)))
 
   model.outcome[['ridge']] = list('model' = ridge,
                                   'rmse' =  data.frame('name'= 'ridge regression',
@@ -127,13 +135,13 @@ comp_table <- function(Adult){
   lasso.pred.train = predict(lasso, X.train, s = "lambda.min")
 
   # calculate rmse on training set
-  #print(paste('RMSE on training set:', rmse2(lasso.pred.train, Y.train)))
+  print(paste('RMSE on training set:', rmse2(lasso.pred.train, Y.train)))
 
   # prediction for the test set
   lasso.pred.test = predict(lasso, X.test, s = "lambda.min")
 
   # calculate RMSE for the test data set
-  #print(paste('RMSE on test set:', rmse2(lasso.pred.test, Y.test)))
+  print(paste('RMSE on test set:', rmse2(lasso.pred.test, Y.test)))
 
 
   # store model object and results of rmse in the `list` object named `model.outcome`

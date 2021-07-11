@@ -1,6 +1,6 @@
 ---
 title: "ReadMe"
-output: pdf_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -19,5 +19,5 @@ The main project document is called 20346212MLProject.
 All functions are stored in the folder code - the functions that are important are explained in the project document 20346212MLProject. Some of the functions are redundant and were used to test ideas.
 All tex files and code used for referencing is stored in the Tex folder.
 
-The SQL r script should be run first.
+The SQL r script should be run first
 
