@@ -1,0 +1,5 @@
+"0","list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
+ibrary(kableExtra)
+"
+"2","Error in ibrary(kableExtra) : could not find function ""ibrary""
+"

@@ -1,8 +1,0 @@
-"0","#str(lm1)
-models<- linreg(Adult)
-#str(lm1)
-models<- linreg(Adult)
-data1 <- linreg_pred(Adult) %>% tibble::as_tibble() 
-"
-"2","Error in linreg_pred(Adult) : could not find function ""linreg_pred""
-"

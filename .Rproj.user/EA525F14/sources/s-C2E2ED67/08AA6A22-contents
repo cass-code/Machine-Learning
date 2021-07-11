@@ -17,5 +17,7 @@ The main project document is called 20346212MLProject.
 "Data Work.Rmd" and "Data Manipulation 2.Rmd" can be ignored - they were used for testing and checking code in a safe environment.
 
 All functions are stored in the folder code - the functions that are important are explained in the project document 20346212MLProject. Some of the functions are redundant and were used to test ideas.
-All tex files and code used for referencing is stored in the Tex folder
+All tex files and code used for referencing is stored in the Tex folder.
+
+The SQL r script should be run first
 

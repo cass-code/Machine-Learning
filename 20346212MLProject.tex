@@ -135,18 +135,26 @@
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 
 %%% Include extra packages specified by user
+\usepackage{booktabs}
+\usepackage{longtable}
 \usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 \usepackage{caption}
 \usepackage{graphicx}
 \usepackage{siunitx}
-\usepackage[normalem]{ulem}
-\usepackage{colortbl}
-\usepackage{multirow}
 \usepackage{hhline}
 \usepackage{calc}
 \usepackage{tabularx}
-\usepackage{threeparttable}
-\usepackage{wrapfig}
 \usepackage{adjustbox}
 \usepackage{hyperref}
 
@@ -176,6 +184,46 @@
 \setlength{\fboxsep}{5pt plus 0pt minus 0pt}
 
 
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 
 \begin{document}
 
@@ -183,7 +231,7 @@
 
 \begin{frontmatter}  %
 
-\title{Exploring Machine Learning}
+\title{Exploring Machine Learning and Predicting Income}
 
 % Set to FALSE if wanting to remove title (for submission)
 
@@ -237,22 +285,26 @@
 \section{\texorpdfstring{Introduction
 \label{Introduction}}{Introduction }}\label{introduction}}
 
-Economists have long been interested in the discussion of what factors
-influence a person's income. In more recent times, machine learning
-techniques have become one tool
+Labour economists have long been interested in the identifying the
+factors that influence a person's income.
 
-Machine learning race is a topic that has \ldots{} One of the uses of
-machine learning is it can be used to classify data.
+This paper investigates how well machine learning techniques can predict
+income and race. The focus is on machine learning and the code, rather
+than the economic interpretation of the model results.
 
-This paper is split into two main parts: part 1 \ref{ML} applies machine
-learning techniques to the NIDS dataset \ref{Data} and part 2
-\ref{sequel} makes use of sequel to manipulate the NIDS dataset. The
-machine learning section first compares the effectiveness of linear
-regression and regularised regression on predicting people's incomes.
-Then 5 classification algorithms - Linear Discriminant Analysis,
+This paper\footnote{This assignment was written using the package by
+  \protect\hyperlink{ref-Texevier}{Katzke}
+  (\protect\hyperlink{ref-Texevier}{2017})} is structured as follows.
+First, the data set - NIDS - is discussed in section \ref{Data}; then
+the methodology is explained in section \ref{Meth}. Section \ref{ML}
+applies machine learning techniques to the NIDS data set, and comprises
+two subsections. The first subsection (\ref{income}) compares the
+effectiveness of linear regression and regularised regression on
+predicting people's incomes. The second subsection (\ref{race})
+evaluated 5 classification algrithms - Linear Discriminant Analysis,
 Classification and Regression Trees, k-Nearest Neighbors, Support Vector
-Machines with a linear kernel and Random Forest - are evaluated on their
-accuracy in predicting a person's race.
+Machines with a linear kernel and Random Forest - on their accuracy in
+predicting a person's race.
 
 \hypertarget{data}{%
 \section{\texorpdfstring{Data \label{Data}}{Data }}\label{data}}
@@ -271,7 +323,147 @@ Department of Planning, Monitoring and Evaluation and the survey is
 implemented by the Southern Africa Labour and Development Research Unit
 (SALDRU) at the University of Cape Town. The data set is comprehensive
 and covers topics relating to poverty, health, household composition,
-mortality, expenditure, income and employment.
+mortality, expenditure, income and employment. The NIDS data set is
+partitioned into different units of observations (e.g.~adults, children,
+household etc.); for this assignment, data on adults was used.
+
+One weakness of the NIDS data set is that it suffers from the common
+problem that households at the higher end of the income distribution
+tend to be underrepresented. This could be explained by the fact that
+the rich refuse to fill out forms or they underreport their incomes.
+Because race and income are highly correlated in South Africa, this
+could also imply that white people are undersampled. To correct for the
+sample data not representing the population income/race distribution,
+some balancing techniques are applied in section \ref{race}.
+
+\hypertarget{methodology}{%
+\section{\texorpdfstring{Methodology
+\label{Meth}}{Methodology }}\label{methodology}}
+
+I first made use of SQLite\footnote{I found I struggle quite a bit using
+  SQL but it has got easier with practice. I'm still not 100\%
+  comfortable with it so I used dplyr to manipulate the data for the
+  machine learning section.} to investigate and visualise the data. I
+first ran the code in the R script called SQL. I opened a new connection
+and called it nids, and wrote the NIDS data, which included waves 2-5,
+into tables in the NIDS database. I used a few lines of code to check
+what tables were in nids and what their source was. Then I started to
+explore the NIDS wave 5 data, for example looking at the column names. I
+queried the data and selected 7 variables for analysis: date of birth,
+income, gender, marital status, race, years of schooling and tertiary
+qualification. I used date of birth to calculate the variable `age'.
+
+I cleaned the data by renaming the variables to be reader-friendly and
+removed values that were nonsensical (e.g.~negative years of schooling)
+by applying filters to the data. I wanted to see the proportion of the
+races so I first manipulated the data in the SQL script and then used
+the function `show\_query' to get the code for SQL. I copied this into
+the r chunk in the markdown file and then graphed the results using
+ggplot2. The code below shows some of this process and output:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(DBI)}
+\NormalTok{nids }\OtherTok{\textless{}{-}}\NormalTok{ DBI}\SpecialCharTok{::}\FunctionTok{dbConnect}\NormalTok{(RSQLite}\SpecialCharTok{::}\FunctionTok{SQLite}\NormalTok{(), }\StringTok{"data/nids{-}db\textasciitilde{}output.sqlite"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ \textasciigrave{}race\textasciigrave{}, }\FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ \textasciigrave{}n\textasciigrave{}}
+\KeywordTok{FROM}\NormalTok{ (}\KeywordTok{SELECT}\NormalTok{ \textasciigrave{}w5\_a\_dob\_y\textasciigrave{}, \textasciigrave{}w5\_a\_gen\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}gender\textasciigrave{}, \textasciigrave{}w5\_a\_popgrp\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}race\textasciigrave{}, }
+\NormalTok{\textasciigrave{}w5\_a\_em1pay\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}income\textasciigrave{}, \textasciigrave{}w5\_a\_mar\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}married\textasciigrave{}, \textasciigrave{}w5\_a\_edschgrd\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}school\textasciigrave{}, }
+\NormalTok{\textasciigrave{}w5\_a\_edter\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}tertiary\textasciigrave{} }\KeywordTok{FROM}\NormalTok{ \textasciigrave{}wave5\textasciigrave{}) }\KeywordTok{WHERE}\NormalTok{ (\textasciigrave{}race\textasciigrave{} }\OperatorTok{\textgreater{}} \FloatTok{0.0} \KeywordTok{AND}\NormalTok{ \textasciigrave{}race\textasciigrave{} }\OperatorTok{\textless{}} \FloatTok{5.0}\NormalTok{)}
+\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ \textasciigrave{}race\textasciigrave{}}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{20346212MLProject_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\begin{tabular}{l}
+\hline
+Race\\
+\hline
+1 = African\\
+\hline
+2 = Coloured\\
+\hline
+3 = Asian/Indian\\
+\hline
+4 = White\\
+\hline
+\end{tabular}
+
+The bar graph above shows that the majority of people sampled are
+African and the smallest proportion are Asian/Indian. In general the
+proportions appear to match the race distribution of South Africans. The
+histogram below reports the number of years of schooling. We can see
+that the majority of the sample has had 12 years of schooling. The data
+for this graph was also manipulated using the SQL script and then the
+SQL code was copied into the r chunk.
+
+\includegraphics{20346212MLProject_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+Looking at the proportion of people who are married versus those that
+are not, we can clearly see that there are more people married than
+unmarried in this sample, as the bar graph below demonstrates.
+
+\includegraphics{20346212MLProject_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\begin{tabular}{l}
+\hline
+Married\\
+\hline
+1 = Married\\
+\hline
+2 = Not married\\
+\hline
+\end{tabular}
+
+If I had wanted to use more than one of the NIDS data sets, say wave 4
+and 5, I could merge the two data sets using the SQL code below. I
+lightly cleaned both data sets beforehand and then used the union\_all
+function to merge them.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT} \FloatTok{2021.0} \OperatorTok{{-}}\NormalTok{ \textasciigrave{}w5\_a\_dob\_y\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}age\textasciigrave{}, \textasciigrave{}w5\_a\_gen\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}gender\textasciigrave{}, \textasciigrave{}w5\_a\_popgrp\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}race\textasciigrave{}, }
+\NormalTok{\textasciigrave{}w5\_a\_em1pay\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}income\textasciigrave{}, \textasciigrave{}w5\_a\_mar\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}married\textasciigrave{}, \textasciigrave{}w5\_a\_edschgrd\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}school\textasciigrave{}, }
+\NormalTok{\textasciigrave{}w5\_a\_edter\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}tertiary\textasciigrave{} }\KeywordTok{FROM}\NormalTok{ \textasciigrave{}wave5\textasciigrave{}}
+\KeywordTok{UNION} \KeywordTok{ALL}
+\KeywordTok{SELECT} \FloatTok{2021.0} \OperatorTok{{-}}\NormalTok{ \textasciigrave{}w4\_a\_dob\_y\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}age\textasciigrave{}, \textasciigrave{}w4\_a\_gen\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}gender\textasciigrave{}, \textasciigrave{}w4\_a\_popgrp\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}race\textasciigrave{}, }
+\NormalTok{\textasciigrave{}w4\_a\_em1pay\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}income\textasciigrave{}, \textasciigrave{}w4\_a\_mar\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}married\textasciigrave{}, \textasciigrave{}w4\_a\_edschgrd\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}school\textasciigrave{}, }
+\NormalTok{\textasciigrave{}w4\_a\_edter\textasciigrave{} }\KeywordTok{AS}\NormalTok{ \textasciigrave{}tertiary\textasciigrave{} }\KeywordTok{FROM}\NormalTok{ \textasciigrave{}wave4\textasciigrave{}}
+\end{Highlighting}
+\end{Shaded}
+
+The table below provides a glimpse into the first 5 rows of the newly
+joined data set. I output a variable in the previous chunk as a
+dataframe and then displayed the dataframe in a table in the next r
+chunk. However, I could have used the function `head' in the SQL script
+on the joined dataframe and the used the `collect()' function to save
+the output to a global object and then displayed that object as a
+dataframe.
+
+\begin{tabular}{r|r|r|r|r|r|r}
+\hline
+age & gender & race & income & married & school & tertiary\\
+\hline
+41 & 1 & 2 & 23752 & 1 & 12 & 1\\
+\hline
+28 & 1 & 1 & NA & NA & 10 & 2\\
+\hline
+42 & 2 & 1 & NA & 1 & 11 & 1\\
+\hline
+49 & 1 & 1 & NA & 1 & 11 & 1\\
+\hline
+54 & 1 & 1 & NA & NA & 25 & NA\\
+\hline
+\end{tabular}
+
+After the initial data exploration I decided to focus on predicting
+income and race using machine learning techniques, which are presented
+in the following section.
 
 \hypertarget{machine-learning}{%
 \section{\texorpdfstring{Machine Learning
@@ -300,10 +492,12 @@ of income using K-fold cross validation. For these regressions I built a
 function ``linreg'', which takes in a data frame, cleans and splits the
 data into a training (70\% of the full data set) and a test set (30\% of
 the full data set) and runs 3 different linear regressions, applying
-K-fold cross validation. The results of the regressions are then
-collected and stored in a list, which is returned by the function. I
-used k = 10, because empirically k=10 has been shown have test error
-rate estimates that have relatively low bias and variance
+K-fold cross validation. The sample size for regressions amounts to 4258
+observations, with the training and testing sets amounting to 2982 and
+1276 respectively. The results of the regressions are then collected and
+stored in a list, which is returned by the function. I use k = 10,
+because empirically k=10 has been shown have test error rate estimates
+that have relatively low bias and variance
 (\protect\hyperlink{ref-k}{Kassambara}
 (\protect\hyperlink{ref-k}{2018a})). I have also set seed in the
 function for reproducibility.
@@ -317,7 +511,10 @@ marriage. The signs of the coefficients of the three regressions look
 fairly standard\footnote{This at least is a good indication that the
   data is fairly well cleaned and is usable for testing the machine
   learning techniques} and most of the coefficients are statistically
-significant at 1\% and lower.
+significant at 1\% and lower. For the variables whose coefficients are
+not statistically significant, labour market literature and economic
+theory suggest that they are important controls and should be included,
+which justifies their presence.
 
  
   \providecommand{\huxb}[2]{\arrayrulecolor[RGB]{#1}\global\arrayrulewidth=#2pt}
@@ -546,8 +743,8 @@ performance of a regression model is the Root Mean Squared Error (RMSE)
 (\protect\hyperlink{ref-rmse}{2018b})).The RMSE measures the average
 error performed by the model in predicting the outcome for an
 observation. The mathematical formula for the RMSE is given by
-\[RMSE = \sqrt{(observeds - predicteds)^2/N)}\] This implies lower the
-RMSE, the better the model performs.
+\[RMSE = mean(\sqrt{(observeds - predicteds)^2))}\] This implies lower
+the RMSE, the better the model performs.
 
 Table \ref{Stats} reports the RMSES for both the training data and the
 test data. We can see that the RMSEs decreased from regression 1 to
@@ -577,32 +774,6 @@ Reg 1 & 0.86 & 0.91 \\
 \includegraphics{"images/ridge.png"} \label{ridge}
 
 \includegraphics{"images/lasso.png"} \label{lasso}
-
-tibble {[}3 x 1{]} (S3: tbl\_df/tbl/data.frame) \$ Reg: num {[}1:3{]}
-0.915 0.881 0.822 {[}1{]} ``RMSE on training set: 0.752131288720079''
-{[}1{]} ``RMSE on test set: 0.882932895421073'' {[}1{]} ``RMSE on
-training set: 0.752842149603987'' {[}1{]} ``RMSE on test set:
-0.88481632436016'' {[}1{]} ``RMSE on training set: 0.752681521998011''
-{[}1{]} ``RMSE on test set: 0.885305140817852'' {[}1{]} ``RMSE on
-training set: 0.760957159147364'' {[}1{]} ``RMSE on test set:
-0.734724499416784'' {[}1{]} ``RMSE on training set: 0.761176361760862''
-{[}1{]} ``RMSE on test set: 0.735047813129022'' {[}1{]} ``RMSE on
-training set: 0.76097313627485'' {[}1{]} ``RMSE on test set:
-0.734938202183037''
-
-\begin{table}[H]
-\centering
-\caption{Model RMSEs} 
-\label{RMSE}
-\begin{tabular}{lrrrrrr}
-  \hline
-Dataset & Lasso regression & linear model & Reg 1 & Reg 2 & Reg 3 & ridge regression \\ 
-  \hline
-Test & 0.89 & 0.88 & 0.91 & 0.88 & 0.82 & 0.88 \\ 
-  Train & 0.75 & 0.75 & 0.86 & 0.83 & 0.79 & 0.75 \\ 
-   \hline
-\end{tabular}
-\end{table}
 
 If we wanted to compare all 6 models visually we could look at the bar
 graph below .
@@ -636,27 +807,18 @@ relevant statistics.
 
 \begin{figure}
 \centering
-\includegraphics{"images/statssvm.png"}
-\caption{SVM Statistics}
+\includegraphics{"images/cmrf.png"}
+\caption{Random Forest Confusion Matrix}
 \end{figure}
 
-\begin{figure}[H]
-
-{\centering \includegraphics{20346212MLProject_files/figure-latex/unnamed-chunk-8-1} 
-
-}
-
-\caption{Confusion Matrix \label{Figure3}}\label{fig:unnamed-chunk-8}
+\begin{figure}
+\centering
+\includegraphics{"images/statsrf.png"}
+\caption{Random Forest Statistics}
 \end{figure}
-
-\hypertarget{sequel}{%
-\section{\texorpdfstring{Sequel \label{sequel}}{Sequel }}\label{sequel}}
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
-
-\protect\hyperlink{ref-Texevier}{Katzke}
-(\protect\hyperlink{ref-Texevier}{2017})
 
 \newpage
 

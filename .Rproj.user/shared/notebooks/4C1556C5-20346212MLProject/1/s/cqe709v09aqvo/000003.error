@@ -1,1 +1,0 @@
-{"frames":[{"func":"linreg_pred(Adult) %>% tibble::as_tibble()","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0},{"func":"tibble::as_tibble(.)","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0}],"message":"Error in linreg_pred(Adult) : could not find function \"linreg_pred\"\n"}
