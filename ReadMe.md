@@ -1,11 +1,3 @@
----
-title: "ReadMe"
-output: html_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
 # ReadMe
 
 This R project contains the code and write up for my Data science 871 machine learning assignment.
