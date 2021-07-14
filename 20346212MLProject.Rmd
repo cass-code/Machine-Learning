@@ -124,19 +124,19 @@ library(rsample)
 
 # Introduction \label{Introduction}
 
-Labour economists have long been interested in the identifying the factors that influence a person's income. 
+Machine learning is a field that develops algorithms designed to be applied to data sets, usually with the goal of prediction, classification, and clustering (@eco). Given that economists often work with data (mostly using econometrics and statistical modeling), machine learning could be a valuable addition to the economic toolkit. One of the advantages of machine learning algorithms is that they can handle large data sets that are multi-dimensional and multi-variety. With there being a significant increase in data availability for economics and other fields, machine learning offers researchers a method to process and exploit large volumes of data more efficiently than traditional statistical methods (@ecoml). Machine learning also offers economists the opportunity to build more flexible models, which is useful since economic theory is often vague about the specific functional forms of objects to be estimated. 
 
-This paper investigates how well machine learning techniques can predict income and race. The focus is on machine learning and the code, rather than the economic interpretation of the model results.
+While linear regression analysis is commonly used in labour economics to decompose wages, it would be interesting to see if other machine learning algorithms could provide insight on such analysis. This paper therefore investigates how well machine learning techniques can predict income, given certain predictive variables. The second part of the paper explores how well race can be predicted using machine learning. The focus of this essay is on executing machine learning algorithms and demonstrating the use of SQL tools, rather than the economic interpretation of the model results. I include some discussion of the code used to generate the results as well as some of the intuition behind the machine learning methods.
 
-This paper^[This assignment was written using the package by @Texevier] is structured as follows. First, the data set - NIDS - is discussed in section \ref{Data}; then the methodology is explained in section \ref{Meth}. Section \ref{ML} applies machine learning techniques to the NIDS data set, and comprises two subsections. The first subsection (\ref{income}) compares the effectiveness of linear regression and regularized regression on predicting people's incomes. The second subsection (\ref{race}) evaluated 5 classification algrithms - Linear Discriminant Analysis, Classification and Regression Trees, k-Nearest Neighbors, Support Vector Machines with a linear kernel and Random Forest - on their accuracy in predicting a person's race. 
+This paper^[This assignment was written using the package by @Texevier] is structured as follows. First, the data set - NIDS - is discussed in section \ref{Data}. Then the methodology is explained in section \ref{Meth}, which focuses on the use of SQL. Section \ref{ML} applies machine learning techniques to the NIDS data set, and comprises two subsections. The first subsection (\ref{income}) compares the effectiveness of linear regression and regularized regression on predicting people's incomes. The second subsection (\ref{race}) evaluates 5 classification algorithms - Linear Discriminant Analysis, Classification and Regression Trees, k-Nearest Neighbors, Support Vector Machines with a linear kernel and Random Forest - on their accuracy in predicting a person's race. The final section (\ref{con}) concludes^[This project can be found on Github at https://github.com/cass-code/Machine-Learning.git]. 
 
 # Data  \label{Data}
-The data used for this assignment was sourced from Wave 5 of the National Income Dynamics Survey (NIDS) (@nids). The survey is a nationally representative household panel study, which started in 2008 with a group of over 28,000 individuals from 7,300 households. The same households are surveyed every 2 years for NIDS. The latest survey - wave 5 - was conducted in 2017. For wave 5, a total of 39,434 individuals were interviewed; 20,113 of which were part of the original study - wave 1 - and 2,016 were from a top-up sample. NIDS is funded by the Department of Planning, Monitoring and Evaluation and the survey is implemented by the Southern Africa Labour and Development Research Unit (SALDRU) at the University of Cape Town. The data set is comprehensive and covers topics relating to poverty, health, household composition, mortality, expenditure, income and employment. The NIDS data set is partitioned into different units of observations (e.g. adults, children, household etc.); for this assignment, data on adults was used. 
+The data used for this assignment was sourced from the National Income Dynamics Survey (NIDS) (@nids). The survey is a nationally representative household panel study, which started in 2008 with a group of over 28,000 individuals from 7,300 households. The same households are surveyed every 2 years for NIDS. The latest survey - wave 5 - was conducted in 2017. For wave 5, a total of 39,434 individuals were interviewed; 20,113 of which were part of the original study - wave 1 - and 2,016 were from a top-up sample. NIDS is funded by the Department of Planning, Monitoring and Evaluation and the survey is implemented by the Southern Africa Labour and Development Research Unit (SALDRU) at the University of Cape Town. The data set is comprehensive and covers topics relating to poverty, health, household composition, mortality, expenditure, income and employment. The NIDS data set is partitioned into different units of observations (e.g. adults, children, household etc.); for the machine learning component of this assignment, data from wave 5 was used, with adults as the unit of observation. 
 
-One weakness of the NIDS data set is that it suffers from the common problem that households at the higher end of the income distribution tend to be underrepresented. This could be explained by the fact that the rich refuse to fill out forms or they underreport their incomes. Because race and income are highly correlated in South Africa, this could also imply that white people are undersampled. To correct for the sample data not representing the population income/race distribution, some balancing techniques are applied in section \ref{race}.
+One weakness of the NIDS data set is that it suffers from the common problem that households at the higher end of the income distribution tend to be underrepresented. This could be explained by the fact that the rich refuse to fill out forms or they underreport their incomes. Because race and income are highly correlated in South Africa, this could also imply that white people are undersampled. 
 
 # Methodology \label{Meth}
-I first made use of SQLite ^[I found I struggle quite a bit using SQL but it has got easier with practice. I'm still not 100% comfortable with it so I used dplyr to manipulate the data for the machine learning section.] to investigate and visualise the data. I first ran the code in the R script called SQL. I opened a new connection and called it nids, and wrote the NIDS data, which included waves 2-5, into tables in the NIDS database. I used a few lines of code to check what tables were in nids and what their source was. Then I started to explore the NIDS wave 5 data, for example looking at the column names. I queried the data and selected 7 variables for analysis: date of birth, income, gender, marital status, race, years of schooling and tertiary qualification. I used date of birth to calculate the variable 'age'. 
+Before exploring the data, I first put it into a relational database. Relational databases are useful because they organize data into tables which can be linked based on data common to each. This allows for entirely new tables to be fetched/created from data in one or more tables with a single query. To communicate with the relational database, I used Structured Query Language (SQL) via SQLite ^[I found I struggle quite a bit using SQL but it has got easier with practice.]. To start investigating and visualising the data, I first ran the code in the R script called SQL. I opened a new connection and called it nids, and wrote the NIDS data, which included waves 2-5, into tables in the NIDS database. I used a few lines of code to check what tables were in nids and what their source was. Then I started to explore the NIDS wave 5 data, for example, looking at the column names. I queried the data and selected 7 variables for analysis: date of birth, income, gender, marital status, race, years of schooling and tertiary qualification. I used date of birth to calculate the variable 'age'. 
 
 I cleaned the data by renaming the variables to be reader-friendly and removed values that were nonsensical (e.g. negative years of schooling) by applying filters to the data. I wanted to see the proportion of the races so I first manipulated the data in the SQL script and then used the function 'show_query' to get the code for SQL. I copied this into the r chunk in the markdown file and then graphed the results using ggplot2. The code below shows some of this process and output:
 
@@ -153,7 +153,7 @@ FROM (SELECT `w5_a_dob_y`, `w5_a_gen` AS `gender`, `w5_a_popgrp` AS `race`,
 GROUP BY `race`
 ```
 
-```{r, echo=FALSE,message=FALSE, warning=FALSE, fig.cap = "Race Proportion"}
+```{r, echo=FALSE,message=FALSE, warning=FALSE, fig.cap = "Race Proportion\\label{rac}"}
 library(ggplot2)
 library(tidyverse)
 library(kableExtra)
@@ -162,16 +162,15 @@ ggplot(mydataframe) +
     geom_col(aes(x = race, y = n,)) +
     xlab("Race") +
   ylab("People") +
-  ggtitle("Race proportions")
+  ggtitle("Race Proportions")
 
 names<- data.frame("Race" = c("1 = African", "2 = Coloured", "3 = Asian/Indian", "4 = White")) %>% tibble::as_tibble() 
 kable(names)
 ```
 
-The bar graph above shows that the majority of people sampled are African and the smallest proportion are Asian/Indian. In general the proportions appear to match the race distribution of South Africans. The histogram 
-below reports the number of years of schooling. We can see that the majority of the sample has had 12 years of schooling. The data for this graph was also manipulated using the SQL script and then the SQL code was copied into the r chunk. 
+The bar graph above shows that the majority of people sampled are African and the smallest proportion are Asian/Indian. In general the proportions appear to match the race distribution of the South African population. The histogram below reports the number of years of schooling. We can see that the majority of the sample has had 12 years of schooling. The data for this graph was also manipulated using the SQL script and then the SQL code was copied into the r chunk. 
 
-```{sql, connection=nids, output.var = "df", echo=FALSE, fig.cap = "Years of schooling"}
+```{sql, connection=nids, output.var = "df", echo=FALSE, fig.cap = "Years of schooling\\label{schol}"} 
 SELECT *
 FROM (SELECT *
 FROM (SELECT 2021.0 - `w5_a_dob_y` AS `age`, `w5_a_gen` AS `gender`, 
@@ -192,7 +191,6 @@ library(tidyverse)
   ggtitle("Schooling Distribution")
 ```
 
-Looking at the proportion of people who are married versus those that are not, we can clearly see that there are more people married than unmarried in this sample, as the bar graph below demonstrates.
 ```{sql, connection=nids, output.var = "df1", echo=FALSE}
 SELECT `married`, COUNT(*) AS `n`
 FROM (SELECT 2021.0 - `w5_a_dob_y` AS `age`, `w5_a_gen` AS `gender`, `w5_a_popgrp` AS `race`, `w5_a_em1pay` AS `income`, `w5_a_mar` AS `married`, `w5_a_edschgrd` AS `school`, `w5_a_edter` AS `tertiary`
@@ -201,7 +199,7 @@ WHERE (`married` < 3.0 AND `married` > 0.0)
 GROUP BY `married`
 ```
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.cap = "Married Proportion\\label{mar}"}
 library(ggplot2)
 library(tidyverse)
 library(kableExtra)
@@ -210,11 +208,12 @@ ggplot(df1) +
     geom_col(aes(x = married, y = n,)) +
     xlab("Married") +
   ylab("People") +
-  ggtitle("Married proportions")
+  ggtitle("Married Proportions")
 
 names<- data.frame("Married" = c("1 = Married", "2 = Not married")) %>% tibble::as_tibble() 
-kable(names)
+kable(names) 
 ```
+Looking at the graph above, we see the proportion of people who are married versus those that are not; clearly there are more people married than unmarried in this sample.
 
 If I had wanted to use more than one of the NIDS data sets, say wave 4 and 5, I could merge the two data sets using the SQL code below. I lightly cleaned both data sets beforehand and then used the union_all function to merge them.
 ```{sql, connection=nids, output.var = "df2", echo=TRUE}
@@ -229,7 +228,6 @@ SELECT 2021.0 - `w4_a_dob_y` AS `age`, `w4_a_gen` AS `gender`,
 `w4_a_edter` AS `tertiary` FROM `wave4`
 ```
 The table below provides a glimpse into the first 5 rows of the newly joined data set. I output a variable in the previous chunk as a dataframe and then displayed the dataframe in a table in the next r chunk. However, I could have used the function 'head' in the SQL script on the joined dataframe and the used the 'collect()' function to save the output to a global object and then displayed that object as a dataframe. 
-
 ```{r, echo=FALSE,message=FALSE, warning=FALSE}
 library(kableExtra)
 kable(head(df2, n=5))
@@ -251,7 +249,7 @@ Adult <- read_dta("data/Adult_W5_Anon_V1.0.0.dta") # read in the NIDS data and n
 
 Econometrics often makes use of regression analysis to model economic phenomena, test economic hypotheses and to forecast economic activity @econ [p.2]. A popular method in econometric regression modeling is that of Ordinary Least Squares; however, advances in machine learning have presented alternative/augmenting methods that may be (more) useful. One such augmenting method is K-fold cross validation, which evaluates the skill of machine learning models. As @kfold [p. 569] explain, in K-fold cross validation, a data set is randomly split into $k$ number of groups, of similar sizes. The first group is considered a validation set and the method is fitted to the other $k-1$ groups. 
 
-Below, \ref{Regression} displays 3 different linear regressions of log of income using K-fold cross validation. For these regressions I built a function "linreg", which takes in a data frame, cleans and splits the data into a training (70% of the full data set) and a test set (30% of the full data set) and runs 3 different linear regressions, applying K-fold cross validation. The sample size for regressions amounts to 4258 observations, with the training and testing sets amounting to 2982 and 1276 respectively. The results of the regressions are then collected and stored in a list, which is returned by the function. I use k = 10, because empirically k=10 has been shown have test error rate estimates that have relatively low bias and variance (@k). I have also set seed in the function for reproducibility. 
+Below, \ref{Regression} displays 3 different linear regressions of log of income using K-fold cross validation. For these regressions I built a function 'linreg', which takes in a data frame, cleans and splits the data into a training (70% of the full data set) and a test set (30% of the full data set) and runs 3 different linear regressions, applying K-fold cross validation. The sample size for the regressions amounts to 4258 observations, with the training and testing sets amounting to 2982 and 1276 respectively. The results of the regressions are then collected and stored in a list, which is returned by the function. I use k = 10, because empirically k=10 has been shown to have test error rate estimates that have relatively low bias and variance (@k). I have also set seed in the function for reproducibility. 
 
 Based on the Mincerian wage equation, Regression 1 (see \ref{Regression}) regresses log of income on age, years of schooling and a dummy variable for if a person has a tertiary qualification or not. Regression 2 includes a variable for age-squared and the categorical variable race. Regression 3 includes a variable each for gender and marriage. The signs of the coefficients of the three regressions look fairly standard^[This at least is a good indication that the data is fairly well cleaned and is usable for testing the machine learning techniques] and most of the coefficients are statistically significant at 1% and lower. For the variables whose coefficients are not statistically significant, labour market literature and economic theory suggest that they are important controls and should be included, which justifies their presence.
 
@@ -309,7 +307,22 @@ print.xtable(table,
 ```
 The table above shows that as more explanatory variables are added to the regression, it appears that the model improves in predictive power. However, it could actually be the case that the model is over fitting the data. One method of addressing this issue is to use regularized regression, which constrains the estimated coefficients. It does this by introducing a penalty parameter in the objective function such that the sum of the sum of squared errors and the penalty parameter is minimised. Two common penalty parameters include the ridge and lasso methods. 
 
-To apply the ridge and lasso methods I created two functions: 'plot_ridge' and 'plot_lasso'. These functions use the 'glmnet' package to run the regressions and return a plot of the results, which are reported below. The tuning parameter here is given by $\lambda$. Initially, as $\lambda$ increases there is a decrease in the mean-squared error (MSE) for the lasso method, where the first dotted line indicates the lowest MSE. For the smaller values of lambda, this means that the lasso models has improved upon the OLS model - it is providing a better fit. In the ridge model, as $\lambda$ increases, the coefficient sizes are being reduced but the number of coefficients remains the same. In the lasso model, after the log of $\lambda$ increases to more than -3, the number of parameters starts to decrease. 
+As @ridg explains: starting with a linear regression of the form $Y=X \beta+\varepsilon$ we can estimate the coefficients by ridge regression. This requires that \ref{eq1} is solved: 
+
+\begin{align}
+\hat{\beta}(\text{ridge})=\arg \min _{\beta \in \mathbb{R}^{p}} \frac{1}{n}\|Y-X \beta\|_{2}^{2}+\lambda\|\beta\|_{2}^{2} \label{eq1}
+\end{align} 
+
+with $\lambda>0$ as the regularization parameter (also known as the tuning, penalty, or complexity parameter). Ridge regression involves shrinking the coefficients of correlated explanatory variables equally towards zero.
+
+The lasso estimator requires that the optimization problem (\ref{eq2}) below is solved:
+
+\begin{align}
+\hat{\beta}(\text{lasso})=\underset{{\beta}}{\operatorname{argmin}}\|\mathbf{Y}-\mathbf{X} {\beta}\|_{2}^{2}+\lambda\|\beta\|_{1} \label{eq2}
+\end{align}
+with $\|\beta\|_{1}=\sum_{j=1}^{p}\left|\beta_{j}\right|$ as the $\ell_{1}$ -norm penalty on $\beta$. This ensures the sparsity principle is adhered to in the solution. Again $\lambda$ is a tuning parameter. For a specific $\lambda$ value, the $\ell_{1}$ penalty allows the lasso to regularize the least squares fit and shrink some components of $\hat{\beta}$ to zero (@lass). The lasso model suffers when there is high degree of correlation among explanatory variables. The model will arbitrarily choose one predictor and ignore the others, and the model breaks down when all predictors are identical. The lasso tuning parameter expects many of the coefficients to be near zero, and only a small subset to be larger (@lass).
+
+To apply the ridge and lasso methods I created two functions: 'plot_ridge' and 'plot_lasso'. These functions use the 'glmnet' package (@glm) to run the regressions and return a plot of the results, which are reported below. The tuning parameter here is given by $\lambda$. Initially, as $\lambda$ increases there is a decrease in the mean-squared error (MSE) for the lasso method, where the first dotted line indicates the lowest MSE. For the smaller values of lambda, this means that the lasso models has improved upon the OLS model. In the ridge model, as $\lambda$ increases, the coefficient sizes are being reduced but the number of coefficients remains the same. In the lasso model, after the log of $\lambda$ increases to more than -3, the number of parameters starts to decrease. 
 
 ```{r, warning =  FALSE, include=FALSE, fig.align = 'center', fig.height = 3, fig.width = 6, dev = 'png'}
 ## plot the ridge and lasso models MSEs and parameter values
@@ -322,19 +335,19 @@ l <- plot_lasso(Adult)
 
 <center>
 
-![Ridge]("images/ridge.png") 
+![Ridge Model]("images/ridge.png") 
 
 </center>
 
 <center>
 
-![Lasso]("images/lasso.png")
+![Lasso Model]("images/lasso.png")
 
 </center>
 
 ```{r, echo = FALSE, include= FALSE, message=FALSE, warning =  FALSE, results = 'FALSE'}
-# plot the bar graph for comparing all the RMSEs
-# I saved the graph as RMSE.png
+## plot the bar graph for comparing all the RMSEs
+## I saved the graph as RMSE.png
 list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
 df <- comp_RMSE(Adult)
 df$variable <- as.character(df$variable)
@@ -373,7 +386,7 @@ final <- bind_rows(df, dff)
 
 I then created a function 'comp_RMSE', which finds the $\lambda$ that minimises the RMSEs for the ridge and lasso models and records the minimised RMSEs. These models are then used to predict the log of income for the test data. The bar chart below displays the RMSEs for the ridge and lasso models and compares them to a base linear regression and the three regressions from \ref{Regression}. Here, I adjusted the code from @ridge tutorial.
 
-The graphs again shows that the RMSEs are lower for the training data than for the test data for all the models.
+The graph shows that the RMSEs are lower for the training data than for the test data for all the models, which could indicate the data is being overfitted. The lasso model performs marginally better than the ridge and linear model on the training and test sets. However, out of all the models regression 3 performs the best on the test set, while the lasso model performs the best on the training set. The disappointing performance of the ridge model could be explained by the fact that there are few predictor variables. Ridge regression performs well when there are many explanatory variables that each have a small effect on the outcome variable (@lass). We can see from the earlier regressions that education, specifically the presence of tertiary education, has a large effect on income, with the other predictors having a varying degree of influence.
 
 <center>
 
@@ -381,21 +394,36 @@ The graphs again shows that the RMSEs are lower for the training data than for t
 
 </center>
 
-While economists are interested in predicting wage based on variables such as race and education, it might be interesting to see if race can be predicted using income and other variables. The next section explores this idea by applying classification algorithms on the NIDS data set.
+While economists are interested in predicting wages based on variables such as race and education, it might be interesting to see if race can be predicted using income and other variables. The next section explores this idea by applying classification algorithms on the NIDS data set.
 
 ## Predicting Race \label{race}
 
-```{r, warning =  FALSE, fig.align = 'center', fig.cap = "ML on unbalanced data", fig.height = 3, fig.width = 6, dev = 'png'}
-# list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
-# cleaned <- clean(Adult)
-# unbal <-ML_Plot(cleaned) # running the machine learning algorithms on unbalanced data
-# plot(unbal)
+This section investigates how well race can be predicted based on income, education, age, gender and marital status. 5 different machine learning classification methods were implemented: Linear Discriminant Analysis, Classification and Regression Trees, k-Nearest Neighbors, Support Vector Machines with a linear kernel and Random Forest. Each method is detailed below, followed by a discussion of the results of their application to the data. Each method was applied to 3 different data sets: first to an unbalanced data set, then to data set that was balanced using undersampling, and finally to a data set that was balanced using under and oversampling methods. 
+
+Linear Discriminant Analysis (LDA), is a statistical a method that finds a linear combination of features that characterizes two or more categories of observations. This combination can then be used as a linear classifier. Or this combination can be used to reduce the number of variables and dimensions of a classification problem, without there being a significant information loss (@lda). LDA assumes that each variable follows a normal distribution. It also assumes that each variable has the same variance. To make predictions, LDA estimates the likelihood that a new set of features belongs to each group. The group that has the highest probability is the output group and the prediction is made. To estimate these probabilities, Bayes Theorem is used. In the figures (\ref{fig1}, \ref{fig2}, \ref{fig3}) below, the results for the LDA model are labeled as 'lda'.
+
+The second method used to classify the data was Classification and Regression Trees (CART). As @cart [p.4] explains, CART analysis is a type of binary recursive partitioning, which involves the splitting of a node in a decision tree into two groups. Each node can be further split into two nodes (known as child nodes), and the original node is termed a parent node. This process can be applied several times over, hence the "recursive" part of binary recursive partitioning. Based on an exhaustive search of all possibilities, CART finds “splitting” variables. One of the advantages of using CART is it does not make assumptions about the underlying distribution of values of the explanatory variables.
+
+There are essentially four steps in the CART process. The first step involves the tree building, where a tree is constructed via a recursive splitting of nodes. Each of the nodes is assigned a predicted group, based off of the distribution of groups in the training data, and the decision cost matrix. The second step involves stopping the process of tree building. The third step comprises tree "pruning", which involves reducing the number of nodes to produce a sequence of simpler trees. The final step is where the optimal tree is selected from the pruned trees based on which tree fits the information of the training data without overfitting it (@cart [p.6]). The results for the CART model are labeled as 'cart' in the figures (\ref{fig1}, \ref{fig2}, \ref{fig3}) below.
+
+The third machine learning technique is known as k-Nearest Neighbors (KNN). As @book explaines, KNN predicts each observation based on how similar it is to other observations. KNN is a supervised/memory-based machine learning algorithm. As such, it has no closed form and when given new unlabeled data, KNN depends on labeled input data to learn a function that produces the relevant output. One of the disadvantages of using KNN is that it is sensitive to noisy predictor variables since these cause similar samples to have greater variability in distance values as well as larger magnitudes. The model will perform poorly if there are too many outliers in the sample. The results for the KNN model are labeled as 'knn' in the charts (\ref{fig1}, \ref{fig2}, \ref{fig3}) below.
+
+Support Vector Machines with a linear kernel (SVM) is one of the more advanced algorithms that is used. According to @book, SVM aims to identify a hyperplane in an N-dimensional space that distinctly classifies the data points. There are many possible hyperplanes that could be chosen to partition two groups of data points. Identifying a hyperplane that distinctly classifies the data involves finding a plane that has the maximum margin. Data points that lie closer to the hyperplane and influence the orientation and position of the plane are known as support vectors. These vectors are used to maximize the margin of the classifier and help construct the SVM (@svm). The results for the SVM model are labeled as 'svm' in the figures (\ref{fig1}, \ref{fig2}, \ref{fig3}) below.
+
+The final model used is Random Forests (RF), which is an algorithm that comprises many decorrelated decision trees (@book). RF generates a ‘forest’, which is trained by bootstrap or bagging aggregating. RF takes the average of the predictions of the trees in the forest and uses this mean to predict outcomes. The accuracy of the prediction can be improved by increasing the number of trees. One advantage of using RF is that it does not require extensive hyperparameter tuning (@book). In the plots below (\ref{fig1}, \ref{fig2}, \ref{fig3}), the RF results are labeled as 'rf'.
+
+I built a function 'ML_plot' that applies the abovementioned algorithms - using 10 fold cross validation where necessary - and returns a plot of the accuracy and kappa results for each. For this, I adapted the code from a tutorial by @ml. Again a split of 70%/30% for the training and testing data was used. The first plot \ref{fig1} shows the results of the algorithms on unbalanced NIDS data. The second figure \ref{fig2} shows the results for the undersampled data and the last figure shows the outcomes for the undersampled and oversampled data \ref{fig3}. To balance^[I originally wrote a function that contained the code for balancing the data. Unfortunately, calling the function broke my document when knitting. To get around this I balanced the data in an r chunk in the document, and saved the plots as images.] the data (i.e. get a more equal distribution of the different races), I used a package called ROSE by @rose. I first undersampled the majority class, African; unfortunately, this method means the sample size is reduced, which could negatively impact the prediction accuracy. To compensate for this, I then also applied oversampling, which involves generating more observations from the minority classes by replicating the samples from the minority groups. The results in figure \ref{fig3} are based on a data set where there was some undersampling of African and some oversampling of the Coloured, Asian/Indian and White groups.
+
+```{r unbalanced, warning =  FALSE, include= FALSE, fig.align = 'center', fig.cap = "ML on unbalanced data", fig.height = 3, fig.width = 6, dev = 'png'}
+list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
+cleaned <- clean(Adult)
+unbal <-ML_Plot(cleaned) # running the machine learning algorithms on unbalanced data
+plot(unbal) # I saved this plot as an image called unbal.png
 ```
 
-
-```{r Figure2, warning =  FALSE, fig.align = 'center', fig.cap = "ML on balanced data (undersampled) \\label{Figure2}", fig.height = 3, fig.width = 6, dev = 'png'}
+```{r balance1, include = FALSE, warning =  FALSE, fig.align = 'center', fig.cap = "ML on balanced data (undersampled) \\label{Figure2}", fig.height = 3, fig.width = 6, dev = 'png'}
 ### This balancing section was in a function but it kept breaking the document when I tried to knit so I unfortunately had to pull it out and put it here
-
+## balancing the data using under sampling methods 
 # library(ROSE)
 # library(tidyverse)
 # library(dplyr)
@@ -418,15 +446,14 @@ While economists are interested in predicting wage based on variables such as ra
 #   bal1 <- bal_under %>% tibble::as_tibble()
 # # #str(cleaned)
 # # #str(bal1)
-# # source("code/balance_both.R")
-# # bal2 <- balance_both(Adult) %>% tibble::as_tibble()
 # source("code/ML_Plot.R")
 # balu <- ML_Plot(bal1) # running the machine learning algorithms on balanced (undersampled) data
-# plot(balu)
+# plot(balu) # I saved this plot as an image called bal1.png
 ```
 
+```{r balance2 , include= FALSE, warning =  FALSE, fig.align = 'center', fig.cap = "ML on balanced data", fig.height = 3, fig.width = 6, dev = 'png'}
 
-```{r Figure3 , warning =  FALSE, fig.align = 'center', fig.cap = "ML on balanced data", fig.height = 3, fig.width = 6, dev = 'png'}
+# # balaning the data using over and under sampling methods 
 # list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
 # source("code/clean.R")
 # cleaned <- clean(Adult)
@@ -469,38 +496,57 @@ While economists are interested in predicting wage based on variables such as ra
 #   bal2 <-  bal_both %>% tibble::as_tibble()
 #   source("code/ML_Plot.R")
 #   balb <- ML_Plot(bal1) # running the machine learning algorithms on balanced (both sampled) data
-#   plot(balb)
+#   plot(balb) # I saved this plot as an image called bal2.png
 ```
-<center>
 
-![Machine Learning applied to unbalanced data]("images/unbal.png") 
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/unbal.png}
+\caption{Machine Learning applied to unbalanced data \label{fig1}}
+\end{figure}
 
-</center>
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/bal1.png}
+\caption{Machine Learning applied to balanced (undersampled) data \label{fig2}}
+\end{figure}
 
-<center>
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/bal2.png}
+\caption{Machine Learning applied to balanced data \label{fig3}}
+\end{figure}
 
-![Machine Learning applied to balanced (undersampled) data]("images/bal1.png") 
+Figure \ref{fig1} shows that the RF algorithm was (marginally) the most accurate in predicting a person's race for the unbalanced data. It had an accuracy measure of 62% (using a confidence level of 95%), where accuracy is the ratio of the number of correct predictions to the total number of input samples. The CART, SVM, and LDA models all performed similarly well, with accuracy statistics lying around 60%. The KNN model performed the worst according to the accuracy measure. However, accuracy isn't the only metric we should be concerned with; since the data is unbalanced, it may be a misleading statistic. For example, since a large part of the sample consists of the class African (let's say it's 80%), if a model predicts African 100% of the time, it would have an accuracy rating of 80%, which is not all that helpful.
 
-</center>
+A second metric we can look at is Cohen’s kappa (calculated based on the confusion matrix), which can help assess the performance of classification models. The kappa metric accounts for an imbalance in class distribution; this also makes it more difficult to interpret, but a higher kappa indicates a better performing model. According to this metric, all the models performed quite poorly. RF and CART have a measure of around 20% and the other models have a kappa round 10% and lower. 
 
-<center>
+Figure \ref{fig2} reports the results of the algorithms applied to the undersampled balanced data. We can see that the accuracy measures decreased for all the models. This could be attributed to a smaller sample size due to the balancing. SVM performed the best, followed by LDA, RF, CART and KNN. Balancing the data set impacted the kappa significantly, with all of the kappas increasing. The kappa for SVM improved from 10% in figure \ref{fig1} to 35% in \ref{fig2}. Similarly in \ref{fig3}, for the other balanced data, the kappa values for all the models improved from those in figure \ref{fig1}. The accuracy measures remain quite low for both balanced data sets, hovering below 60%. The poor predictive power of the model could be due to there being too few predictive variables, low information predictive variables or too small a sample size.
 
-![Machine Learning applied to balanced data]("images/bal2.png")
+A more comprehensive way to gauge the performance of classification algorithms is to look at the confusion matrix. A confusion matrix summarizes the predictive results in a classification problem. Both correct and incorrect predictions are tabulated with their values and broken down by each class. The graph below (\ref{fig4}) displays the confusion matrix for the Random Forest results on the unbalanced data and the tables (\ref{fig5}) report the relevant statistics. 
 
-</center>
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/cmrf.png}
+\caption{Random Forest Confusion Matrix \label{fig4}}
+\end{figure}
+
+The y axis of figure \ref{fig4} indicates the actual values and the x axis indicates the predicted values. The first value indicated in the matrix show the number of predictions for that class. There are four outcomes possible for each prediction: true positive, true negative, false positive and false negative. The first outcome is where the model predicted the correct class. For example, a person who is African is predicted as African. The second outcome is that the model predicted that a person was not of a certain race, when they were not (for example, a person who is Coloured is not predicted as African). The third outcome is a false positive, where a person is predicted as a certain race when they are not. For example, a person who is White is predicted as Asian/Indian. And finally, the fourth outcome is where a person is predicted as not a certain race when they are. For example, a person who is Coloured is predicted as not Coloured. The confusion matrix and statistics measure these outcomes. For example, the bottom left box in the confusion matrix shows the true positive for the class African. There were 406 Africans who were correctly predicted as African. The bottom right box in the confusion matrix shows that there were 14 cases where a person was African but predicted as White.
+
+The tables of \ref{fig5} detail further accuracy metrics. For example, the sensitivity value (also known as recall) for the class Coloured is 9%. This indicates how many cases we predicted correctly out of all the positive classes. The fact that this value is so low indicates RF was not successful at predicting when a person is Coloured. The model was even worse at predicting when a person is Asian/Indian with a specificity of 0% - we can see why this is: the model never once predicted that a person was Asian/Indian. Another metric we could look at is specificity, which determines the proportion of actual negatives that are correctly identified. For Asian/Indian this value is 100%, which means that for every case where a person was not Asian/Indian, the model did not predict them to be Asian/Indian. For African, the specificity was 15%, which means that for 15% of cases where a person was not African, the model did not predict them to be African.
+
+Precision is the ratio of the total number of correctly classified positive classes to the total number of predicted positive classes. For African this was 63%, compared to 45% for Coloured and 51% for White. We would like precision to be high. To help compare models that have different precision and recall values, we can use the F-Score, which is the harmonic mean of recall and precision. Overall, the results of the RF are disappointing and show that the model does not have high predictive power. It does best at correctly predicting people who are African and very poorly at correctly predicting people who are Asian/Indian.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/statsrf.png}
+\caption{Random Forest Statistics \label{fig5}}
+\end{figure}
 
 
-The graph below displays the confusion matrix and the tables report the relevant statistics. 
-
-![Random Forest Confusion Matrix]("images/cmrf.png")
-
-<center>
-
-![Random Forest Statistics]("images/statsrf.png")
-
-</center>
 
 ```{r dpi=350, include = TRUE, warning =  FALSE, fig.align = 'center', fig.cap = "Confusion Matrix \\label{Figure3}", dev = 'png'}
+
 # # I saved the output g1 as an image: cmsvm.png
 # list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
 # cleaned <- clean(Adult)
@@ -515,12 +561,12 @@ The graph below displays the confusion matrix and the tables report the relevant
 # cleaned <- clean(Adult)
 # predicted <- ML_Predict(cleaned) # prediction results
 # g2 <- draw_confusion_stats(predicted[[5]]) # tabulating the statistics of random forest
+
 ```
 
+# Conclusion \label{con}
 
-# Conclusion
-
-
+The purpose of this essay was to explore machine learning techniques and SQL tools. To this end, I manipulated the NIDS data set using SQLite and learned how to integrate SQL and r. SQL has proven to be a powerful tool for working with big data sets and cleaning data. In section \ref{ML}, several machine learning techniques were applied to the NIDS data set, including linear and regularized regression as well as classification algorithms. The results were disappointing, with the machine learning techniques having low predictive power.
 
 
 \newpage

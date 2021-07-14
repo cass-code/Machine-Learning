@@ -34,6 +34,7 @@ ML_Results <- function(cleaned){
   # SVM
   set.seed(7)
   fit.svm <- train(race~., data=cleaned, method="svmRadial", metric=metric, trControl=control)
+
   # Random Forest
   set.seed(7)
   fit.rf <- train(race~., data=cleaned, method="rf", metric=metric, trControl=control)
